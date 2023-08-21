@@ -16,17 +16,7 @@
 \metroset{sectionpage=progressbar}
 \usefonttheme{professionalfonts}
 \setmonofont{FiraMono-Regular.otf}  % https://tex.stackexchange.com/q/545073
-\makeatletter
-\renewcommand{\metropolis@colors@dark}{%
-    \setbeamercolor{normal text}{fg=black!2, bg=mDarkTeal}%
-    \usebeamercolor[fg]{normal text}}
-\renewcommand{\metropolis@colors@light}{%
-    \setbeamercolor{normal text}{fg=mDarkTeal, bg=black!2}%
-    \usebeamercolor[fg]{normal text}}
-\makeatother
-
-\definecolor{hlcolor}{HTML}{E27A3F}
-\newcommand{\highlight}[1]{{\color{hlcolor} \textbf{#1}}}
+\usepackage{beamercolorthememetropolisinria}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Syntax highlighting
