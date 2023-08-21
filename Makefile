@@ -23,5 +23,8 @@ clean:
 open:
 	$(READER) $(PDF) &
 
+install-ubuntu:
+	sudo apt install texlive-xetex texlive-fonts-extra texlive-bibtex-extra
+
 watch:
 	while [ 1 ]; do; inotifywait $(SRC) $(SVG); make; done
