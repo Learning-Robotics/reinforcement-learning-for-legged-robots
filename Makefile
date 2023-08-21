@@ -25,6 +25,7 @@ open:
 
 install-ubuntu:
 	sudo apt install texlive-xetex texlive-fonts-extra texlive-bibtex-extra biber
+	sudo apt install texlive-latex-extra  # has metropolis beamer theme
 
 watch:
 	while [ 1 ]; do; inotifywait $(SRC) $(SVG); make; done
