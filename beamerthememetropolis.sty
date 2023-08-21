@@ -77,8 +77,8 @@
     titleformat plain=regular,
   }
 }
-\ifx\tikzexternalenable\undefined \newcommand{\tikzexternalenable}{} \fi
-\ifx\tikzexternaldisable\undefined \newcommand{\tikzexternaldisable}{} \fi
+\providecommand{\tikzexternalenable}{}
+\providecommand{\tikzexternaldisable}{}
 \useinnertheme{metropolis}
 \useoutertheme{metropolis}
 \usecolortheme{metropolis}

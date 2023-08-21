@@ -273,16 +273,23 @@
         bg=palette primary.bg
       }
     }
-  \centering
-  \usebeamercolor[fg]{palette primary}
-  \usebeamerfont{standout}
+    \setbeamercolor{local structure}{
+      fg=palette primary.fg
+    }
+    \usebeamercolor[fg]{palette primary}
 }
-  \apptocmd{\beamer@reseteecodes}{%
+  \pretocmd{\beamer@reseteecodes}{%
     \ifbool{metropolis@standout}{
       \endgroup
       \boolfalse{metropolis@standout}
     }{}
   }{}{}
+  \AtBeginEnvironment{beamer@frameslide}{
+    \ifbool{metropolis@standout}{
+      \centering
+      \usebeamerfont{standout}
+    }{}
+  }
 \metropolis@inner@setdefaults
 \ProcessPgfPackageOptions{/metropolis/inner}
 \endinput
