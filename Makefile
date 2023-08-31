@@ -3,7 +3,7 @@ LATEX=xelatex -interaction nonstopmode -halt-on-error -file-line-error -shell-es
 READER=zathura
 SHELL=/bin/zsh
 
-SRC=rl-2023.tex
+SRC=slides.tex
 PDF=$(SRC:.tex=.pdf)
 TMP=$(wildcard *.aux *.bbl *.bcf *.blg *.dvi *.log *.nav *.out *.ps *.fls *.listing *.glo *.idx *.run.xml *.snm *.tns *.toc *.vrb)
 SVG=$(wildcard figures/*.svg)
@@ -28,4 +28,4 @@ install-ubuntu:
 	sudo apt install texlive-latex-extra  # has metropolis beamer theme
 
 watch:
-	while [ 1 ]; do; inotifywait $(SRC) $(SVG); make; done
+	while [ 1 ]; do; inotifywait $(SRC) $(SVG) && make; done
