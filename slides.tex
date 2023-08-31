@@ -112,13 +112,36 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\metroset{background=dark}
-\section*{From INFO to ROB}
-%\metroset{background=light}
+\begin{frame}{Environment bounds}
+    \begin{align*}
+        u & = \pi(o) & o' & = \mathrm{step}(u)
+    \end{align*}
+    \begin{figure}
+        \includegraphics[width=\columnwidth]{genfig/max-accel.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{That's all folks!}
+    \vspace{2em}
+    \begin{figure}
+        \centering
+        \includegraphics[height=10em]{genfig/thanks.pdf}
+    \end{figure}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[fragile]{Robot descriptions}
+\section*{Bibliography}
+
+\renewcommand*{\bibfont}{\footnotesize}
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\begin{frame}[allowframebreaks]{References}
+    \printbibliography[heading=none]
+\end{frame}
+
+\section*{Templates}
+
+\begin{frame}[fragile]{Python code}
     Load a robot description:
     \begin{minted}{python}
         from robot_descriptions.loaders.pinocchio import load_robot_description
@@ -148,49 +171,5 @@
         Setup: \mintinline{bash}{pip install meshcat pin robot_descriptions}
     }
 \end{frame}
-
-\section*{What did we see?}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{What did we see?}
-    From INFO to ROB:
-    \begin{itemize}
-        \item One possible use of one's \emph{engagement d\'{e}cennal}
-    \end{itemize}
-    Balancing legged robots:
-    \begin{itemize}
-        \item \textbf{Physics:} linear inverted pendulum, ZMP, support area
-        \item \textbf{Trajectory generation:} ideal trajectory
-        \item \textbf{Balance control:} adjust ZMP based on the CoM/DCM
-    \end{itemize}
-    Applies to humanoids, wheeled bipeds, flywheeled coffee makers, etc.
-    \blfootnote{
-        Questions? $\to$ \url{mailto:stephane.caron@normalesup.org}
-    }
-\end{frame}
-
-\begin{frame}{That's all folks!}
-    \vspace{2em}
-    \begin{figure}
-        \centering
-        \includegraphics[height=10em]{genfig/thanks.pdf}
-    \end{figure}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\section*{Bibliography}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\renewcommand*{\bibfont}{\footnotesize}
-\setbeamertemplate{bibliography item}{\insertbiblabel}
-
-\begin{frame}[allowframebreaks]{References}
-    \printbibliography[heading=none]
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}
