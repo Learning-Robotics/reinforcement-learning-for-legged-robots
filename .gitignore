@@ -15,5 +15,5 @@
 *.toc
 *.vrb
 _minted*
-rl-2023.pdf
 genfig/*.pdf
+slides.pdf
