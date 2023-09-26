@@ -136,10 +136,16 @@
 
 \begin{frame}{Reward vocabulary}
     Let $r_e$ denote the reward associated with an error function $e$:
+
+    Motivation:
+    \begin{itemize}
+        \item Exponential: $r_e = \exp(-e^2)$
+    \end{itemize}
+
+    Penalization:
     \begin{itemize}
         \item Absolute value $r_e = -|e|$
         \item Squared value: $r_e = -e^2$
-        \item Exponential: $r_e = \exp(-e^2)$
     \end{itemize}
 \end{frame}
 
