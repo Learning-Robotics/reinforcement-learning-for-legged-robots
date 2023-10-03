@@ -10,15 +10,19 @@ SVG=$(wildcard figures/*.svg)
 FIG_PDF=$(SVG:.svg=.pdf)
 GENFIG=$(FIG_PDF:figures/%=genfig/%)
 
-all: $(GENFIG) $(SRC)
+all: genfig $(GENFIG) $(SRC)
 	$(LATEX) $(SRC)
 	$(BIBTEX) $(SRC:.tex=)
+
+genfig:
+	mkdir -p genfig
 
 genfig/%.pdf: figures/%.svg
 	inkscape -C -z --file=$< --export-pdf=$@
 
 clean:
 	-@rm -f $(PDF) $(TMP)
+	-@rm -rf genfig/
 
 open:
 	$(READER) $(PDF) &
