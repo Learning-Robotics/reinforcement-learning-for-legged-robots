@@ -165,7 +165,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Intro to reinforcement learning}
+\section*{Basics of reinforcement learning}
 
 \begin{frame}{Scope}
     \begin{figure}
@@ -203,9 +203,13 @@
 \end{frame}
 
 \begin{frame}{Model of the agent}
+    A couple more definitions:
     \begin{itemize}
         \item \textbf{Trajectory:} $\tau = (s_0, a_0, s_1, a_1, \ldots)$
         \item \textbf{Return:} $R(\tau) = \sum_{t \in \tau} r_t$ or with discount $\gamma \in ]0, 1[$: $R(\tau) = \sum_{t \in \tau} \gamma^t r_t$
+    \end{itemize}
+    Finally, our model of the agent:
+    \begin{itemize}
         \item \textbf{Policy:} agent decisions, deterministic $a_t = \pi(s_t)$ or stochastic $a_t \sim \pi(\cdot | s_t)$
     \end{itemize}
 \end{frame}
@@ -254,7 +258,85 @@
         \item \textbf{Value function:} evaluation of states
         \item \textbf{Model:} representation of the environment
     \end{itemize}
-    An algorithm with a policy (actor) and a value function (critic) is called \emph{actor-critic}.
+    An algorithm with a policy (actor) and a value function (critic) is called \emph{actor-critic}. If it doesn't use a model, it is \emph{model-free}. If it has one (e.g. chess, go), it is \emph{model-based}.
+\end{frame}
+
+\begin{frame}[fragile]{Example: reward's triangle}
+    \begin{columns}
+        \begin{column}{0.50\columnwidth}
+            Environment:
+            \begin{itemize}
+                \item States: discrete triangle $\{(i, j), 0 \leq i < N, i \leq j \}$
+                \item Rewards: $r_{i, j} \in \mathbb{N}$
+                \item Initial state: $(0, 0)$
+                \item Actions: $(i, j) \to (i + 1, j)$ or $(i, j) \to (i + 1, j + 1)$
+            \end{itemize}
+            What is the best return we can collect?
+        \end{column}
+        \begin{column}{0.50\columnwidth}
+            Input: (first integer: $N$, then $N$ lines)
+            \begin{minted}{bash}
+                3
+                1
+                2 3
+                4 5 6
+            \end{minted}
+            Output:
+            \begin{minted}{bash}
+                best_return=10
+            \end{minted}
+        \end{column}
+    \end{columns}
+    \blfootnote{
+        Inputs: \url{https://scaron.info/robotique-mareva/triangles.zip}
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Your turn...}
+    \begin{minted}{python}
+        import numpy as np
+
+        def value(triangle: np.ndarray, state: tuple) -> int:
+            pass  # your job
+
+        size = int(input())
+        triangle = np.zeros((size, size), dtype=int)
+        for row in range(size):
+            rewards = [int(s) for s in input().split(" ")]
+            for col, reward in enumerate(rewards):
+                triangle[row, col] = reward
+
+        best_return = value(triangle, state=(0, 0))
+        print(f"{best_return=}")
+    \end{minted}
+\end{frame}
+
+\begin{frame}{Example summary}
+    \begin{itemize}
+        \item \textbf{States:} triangle
+        \item \textbf{Actions:} down or down-right
+        \item \textbf{Observations:} full state
+        \item \textbf{Model:} yes
+        \item \textbf{Initial state:} $(0, 0)$
+        \item \textbf{Value function:} yes
+        \item \textbf{Policy:} greedy from value function
+        \item \textbf{Return:} maximized
+    \end{itemize}
+\end{frame}
+
+\section{Policy gradient algorithms}
+
+\begin{frame}{Policy-based algorithms}
+    Policy-based algorithms update a policy iteratively. At each iteration $k$:
+    \begin{itemize}
+        \item Collect trajectories $\mathcal{T}_k = \{ \tau \}$
+        \item Update the policy $\pi_{k+1} = \mathit{update}(\pi_k, \mathcal{T}_k)$
+    \end{itemize}
+    Two ways to collect trajectories:
+    \begin{itemize}
+        \item \textbf{On-policy:} trajectories $\mathcal{T}_k$ are collected with the latest policy $\pi_k$
+        \item \textbf{Off-policy:} trajectories $\mathcal{T}_k$ are collected with any policy
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Policy gradient theorem}
