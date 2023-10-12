@@ -477,7 +477,7 @@
 
 \section{Application to robotics}
 
-\begin{frame}{2020: Quadrupedal locomotion~\cite{lee2020}}
+\begin{frame}{Quadrupedal locomotion~\cite{lee2020}}
     \vspace{1.5em}
     \begin{figure}
         \includegraphics[height=5.5cm]{figures/hike-with-anymal.jpg}
@@ -490,7 +490,36 @@
     }
 \end{frame}
 
-\begin{frame}{Reward formulations}
+\begin{frame}{Simulation pipeline}
+    \begin{figure}
+        \includegraphics[height=6cm]{figures/quadruped-sim-pipeline.png}
+    \end{figure}
+    \blfootnote{
+        Source:~\cite{hwangbo2019}
+    }
+\end{frame}
+
+\begin{frame}{Training pipeline}
+    \begin{figure}
+        \includegraphics[height=6.7cm]{figures/quadruped-training.png}
+    \end{figure}
+    \vspace{-0.7cm}
+    \blfootnote{
+        Source:~\cite{hwangbo2019}
+    }
+\end{frame}
+
+\begin{frame}{Curriculum}
+    \begin{figure}
+        \includegraphics[height=6.7cm]{figures/quadruped-curriculum.png}
+    \end{figure}
+    \vspace{-0.7cm}
+    \blfootnote{
+        Source:~\cite{lee2020}
+    }
+\end{frame}
+
+\begin{frame}{Formulating a reward}
     Let $r_e$ denote the reward associated with an error function $e$:
 
     Motivation:
@@ -503,6 +532,20 @@
         \item Absolute value $r_e = -|e|$
         \item Squared value: $r_e = -e^2$
     \end{itemize}
+\end{frame}
+
+\begin{frame}{RewArt}
+    Making an RL pipeline work can lead to complex rewards, e.g. in~\cite{lee2020}:
+    \begin{itemize}
+        \item Linear velocity tracking: $r_{lv} = \exp(-2.0 (v_{pr} - 0.6)^2)$, or 1, or 0
+        \item Angular velocity tracking: $r_{av} = \exp(-1.5 (\omega_{pr} - 0.6)^2)$, or 1
+        \item Base motion tracking: $r_b = \exp(-1.5v_o^2) + \exp(-1.5 \|({}^B_{IB} \omega)_{xy}\|^2)$
+        \item Foot clearance: $r_{fc} = \sum_{i \in I_{swing}} \mathbf{1}_{fclear}(i) / |I_{swing}|$
+        \item Body-terrain collisions: $r_{bc} = -|I_{c,body} \textbackslash I_{c,foot}|$
+        \item Foot acceleration smoothness: $r_{s} = -\| (r_{f,d})_t - 2(r_{f,d})_{t-1} + (r_{f,d})_{t-2}\|$
+        \item Torque penalty: $r_{\tau} = -\sum_{i} | \tau_i |$
+    \end{itemize}
+    Final reward: $r = 0.05 r_{lv} + 0.05 r_{av} + 0.04 r_b + 0.01 r_{fc} + 0.02 r_{bc} + 0.025 r_s + 2 \cdot 10^{-5} r_{\tau}$
 \end{frame}
 
 \begin{frame}{Domain randomization}
@@ -528,8 +571,14 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Normalizing observations}
-    not always a good thing! see figure
+\begin{frame}{Challenges for RL}
+    \begin{itemize}
+        \item \textbf{Sim2real:} no one-size-fits-all method, depends on robot and task
+        \item \textbf{Jittering:} action noise, due to need for stochastic policies (PGT!)
+        \item \textbf{Sample efficiency:} requires millions of samples $(s_t, a_t, s_{t+1})$
+        \item \textbf{Reward shaping:} often a necessity, ``RewArt''!
+        \item \textbf{Human supervision:} monitoring convergence to a satisfying policy\footnote{ Also known as SGD: ``Student Grad Descent``}
+    \end{itemize}
 \end{frame}
 
 \section{Conclusion}
@@ -541,7 +590,7 @@
         \item Model, policy and value function
         \item Policy gradient algorithm
         \item Application to robotics: residual RL, sim2real, domain randomization
-        \item RL is not magic: great results but possibly going to great lengths!
+        \item RL is not magic: great results, but possibly going to great lengths!
     \end{itemize}
 \end{frame}
 
