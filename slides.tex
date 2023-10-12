@@ -182,31 +182,48 @@
     }
 \end{frame}
 
-\begin{frame}{Terminology}
+\begin{frame}{Model of the environment}
     \begin{itemize}
         \item \textbf{State:} $s_t$, ground truth of the environment
-        \item \textbf{Action:} $a_t$, computed
-        \item \textbf{Model:} $s_{t+1} = f(s_t, a_t)$, how the environment evolves
-            \begin{itemize}
-                \item Deterministic: $s_{t+1} = f(s_t, a_t)$
-                \item Stochastic: $s_{t+1} \sim p(\cdot | s_t, a_t)$
-            \end{itemize}
-        \item \textbf{Observation:} $o_t$, read from robot sensors
+        \item \textbf{Action:} $a_t$, decision of the agent
+        \item \textbf{Observation:} $o_t$, \emph{partial} estimation of the state from sensors
+        \item \textbf{Reward:} $r_t \in \mathbb{R}$, scalar feedback, often $r_t = r(s_t, a_t)$ or $r(s_t, a_t, s_{t+1})$
     \end{itemize}
+    \vspace{-1em}
+    \begin{table}
+        \begin{tabular}{rlll}
+            & \emph{Deterministic} & \emph{Stochastic} \\
+            \hline
+            \textbf{Model:} & $s_{t+1} = f(s_t, a_t)$ & $s_{t+1} \sim p(\cdot | s_t, a_t)$ & how the environment evolves \\
+            \textbf{Initial state:} & $s_0$ & $s_0 \sim \rho_0(\cdot)$ & where we start from \\
+            \textbf{Observation:} & $o_t = h(s_t)$ & $o_t \sim z(\cdot | s_t)$ & how sensors measure the world
+        \end{tabular}
+    \end{table}
+    Altogether: partially-observable Markov decision process (POMPD).
 \end{frame}
 
-\begin{frame}{Terminology}
+\begin{frame}{Model of the agent}
     \begin{itemize}
-        \item \textbf{Reward:} $r_t$, often $r_t = r(s_t, a_t)$ or $r(s_t, a_t, s_{t+1})$
-        \item \textbf{Return:} $G_t = \sum_t r_t$
+        \item \textbf{Trajectory:} $\tau = (s_0, a_0, s_1, a_1, \ldots)$
+        \item \textbf{Return:} $R(\tau) = \sum_{t \in \tau} r_t$ or with discount $\gamma \in ]0, 1[$: $R(\tau) = \sum_{t \in \tau} \gamma^t r_t$
+        \item \textbf{Policy:} agent decisions, deterministic $a_t = \pi(s_t)$ or stochastic $a_t \sim \pi(\cdot | s_t)$
     \end{itemize}
-    For instance, for a trajectory $\tau = (s_0, a_0, s_1, a_1, \ldots, s_{N-1}, a_{N-1}, s_N)$:
-    $$
-    G_0 = \sum_{t = 0}^{N-1} r(s_t, a_t) + r_{\mathit{last}}(s_N)
-    $$
 \end{frame}
 
-\begin{frame}{Terminology}
+\begin{frame}{Goal}
+    The goal of reinforcement learning is to find a \emph{policy} that \emph{maximizes} return:
+    \begin{align*}
+        \max_{\pi} \ & \mathbb{E}_{\tau} [R(\tau)] \\
+        \mathrm{s.t.} \ & \tau = (s_0, a_0, s_1, a_1, \ldots) \\
+        & s_0 \sim \rho_0(\cdot) \\
+        & a_0 \sim \pi(\cdot | s_0) \\
+        & s_1 \sim f(\cdot | s_0, a_0) \\
+        & \vdots
+    \end{align*}
+    \textbf{Shorthand:} $\max_\pi \mathbb{E}_{\tau \sim \pi}[R(\tau)]$.
+\end{frame}
+
+\begin{frame}{Parallel with control theory}
     \begin{table}
         \begin{tabular}{ll}
             \textbf{Reinforcement learning} & \textbf{Control theory} \\
@@ -215,21 +232,29 @@
             Observation: $o_t$ & $y_t$ \\
             Action: $a_t$ & Input: $u_t$ \\
             Reward: $r_t$ & Stage cost: $\ell(x_t, u_t)$ \\
-            Return: $\max G_t = \sum_t r_t$ & Cost: $\min J = \sum_t \ell(x_t, u_t)$ \\
+            Return: $\max R(\tau) = \sum_{t \in \tau} r_t$ & Cost: $\min J(\tau) = \sum_{t \in \tau} \ell(x_t, u_t)$ \\
             Model: $s_{t+1} = f(s_t, a_t)$ & Dynamics: $x_{t+1} = f(x_t, u_t)$ \\
         \end{tabular}
     \end{table}
 \end{frame}
 
-\begin{frame}{Components of an RL algorithm}
+\begin{frame}{Value functions}
+    State value functions:
     \begin{itemize}
-        \item Policy: behavior function $a_t = \pi(o_t)$
-        \item Value function: 
+        \item \textbf{On-policy value function:} return we can expect from a given policy: $V^\pi(s) = \mathbb{E}_{\tau \sim \pi}(R(\tau) | s_0 = s)$
+        \item \textbf{Optimal value function:} best return we can expect from a state: $V^*(s) = \max_\pi \mathbb{E}_{\tau \sim \pi}(R(\tau) | s_0 = s)$
     \end{itemize}
+    There are also state-action value functions $Q^\pi(s, a)$ and $Q^*(s, a)$.
 \end{frame}
 
-\begin{frame}{Optimal control and RL}
-    ...
+\begin{frame}{Components of an RL algorithm}
+    A reinforcement-learning algorithm may include any of the following:
+    \begin{itemize}
+        \item \textbf{Policy:} behavior function
+        \item \textbf{Value function:} evaluation of states
+        \item \textbf{Model:} representation of the environment
+    \end{itemize}
+    An algorithm with a policy (actor) and a value function (critic) is called \emph{actor-critic}.
 \end{frame}
 
 \begin{frame}{Policy gradient theorem}
