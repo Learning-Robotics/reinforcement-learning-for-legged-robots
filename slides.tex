@@ -1,4 +1,4 @@
-\documentclass[9pt, aspectratio=169]{beamer}
+\documentclass[11pt, aspectratio=169]{beamer}
 
 \usepackage{amsmath}
 \usepackage{booktabs}
@@ -165,10 +165,67 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Intro/refresher on RL}
+\section*{Intro to reinforcement learning}
+
+\begin{frame}{Scope}
+    \begin{figure}
+        \includegraphics[height=5cm]{genfig/agent-environment.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Rewards}
+    \begin{figure}
+        \includegraphics[height=5.5cm]{figures/stable-baselines3-logo.png}
+    \end{figure}
+    \blfootnote{
+        Image credit: L. M. Tenkes, source: \url{https://araffin.github.io/post/sb3/}
+    }
+\end{frame}
 
 \begin{frame}{Terminology}
-    ...
+    \begin{itemize}
+        \item \textbf{State:} $s_t$, ground truth of the environment
+        \item \textbf{Action:} $a_t$, computed
+        \item \textbf{Model:} $s_{t+1} = f(s_t, a_t)$, how the environment evolves
+            \begin{itemize}
+                \item Deterministic: $s_{t+1} = f(s_t, a_t)$
+                \item Stochastic: $s_{t+1} \sim p(\cdot | s_t, a_t)$
+            \end{itemize}
+        \item \textbf{Observation:} $o_t$, read from robot sensors
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Terminology}
+    \begin{itemize}
+        \item \textbf{Reward:} $r_t$, often $r_t = r(s_t, a_t)$ or $r(s_t, a_t, s_{t+1})$
+        \item \textbf{Return:} $G_t = \sum_t r_t$
+    \end{itemize}
+    For instance, for a trajectory $\tau = (s_0, a_0, s_1, a_1, \ldots, s_{N-1}, a_{N-1}, s_N)$:
+    $$
+    G_0 = \sum_{t = 0}^{N-1} r(s_t, a_t) + r_{\mathit{last}}(s_N)
+    $$
+\end{frame}
+
+\begin{frame}{Terminology}
+    \begin{table}
+        \begin{tabular}{ll}
+            \textbf{Reinforcement learning} & \textbf{Control theory} \\
+            \hline
+            State: $s_t$ & $x_t$ \\
+            Observation: $o_t$ & $y_t$ \\
+            Action: $a_t$ & Input: $u_t$ \\
+            Reward: $r_t$ & Stage cost: $\ell(x_t, u_t)$ \\
+            Return: $\max G_t = \sum_t r_t$ & Cost: $\min J = \sum_t \ell(x_t, u_t)$ \\
+            Model: $s_{t+1} = f(s_t, a_t)$ & Dynamics: $x_{t+1} = f(x_t, u_t)$ \\
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Components of an RL algorithm}
+    \begin{itemize}
+        \item Policy: behavior function $a_t = \pi(o_t)$
+        \item Value function: 
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Optimal control and RL}
