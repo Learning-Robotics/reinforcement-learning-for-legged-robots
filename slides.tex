@@ -205,13 +205,30 @@
 \begin{frame}{Model of the agent}
     A couple more definitions:
     \begin{itemize}
-        \item \textbf{Trajectory:} $\tau = (s_0, a_0, s_1, a_1, \ldots)$
+        \item \textbf{Episode:} $\tau = (s_0, a_0, s_1, a_1, \ldots)$
         \item \textbf{Return:} $R(\tau) = \sum_{t \in \tau} r_t$ or with discount $\gamma \in ]0, 1[$: $R(\tau) = \sum_{t \in \tau} \gamma^t r_t$
     \end{itemize}
     Finally, our model of the agent:
     \begin{itemize}
         \item \textbf{Policy:} agent decisions, deterministic $a_t = \pi(s_t)$ or stochastic $a_t \sim \pi(\cdot | s_t)$
     \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{The Gymnasium API}
+    \begin{minted}{python}
+        import gymnasium as gym
+        import numpy as np
+
+        with gym.make("UpkieGroundVelocity-v1", frequency=200.0) as env:
+            env.reset() 
+            action = np.zeros(env.action_space.shape)
+            for step in range(1_000_000):
+                observation, reward, terminated, truncated, _ = env.step(action)
+                if terminated or truncated:
+                    observation, _ = env.reset()
+                pitch = observation[0]
+                action[0] = 10.0 * pitch  # 1D action: [ground_velocity]
+    \end{minted}
 \end{frame}
 
 \begin{frame}{Goal}
@@ -232,10 +249,11 @@
         \begin{tabular}{ll}
             \textbf{Reinforcement learning} & \textbf{Control theory} \\
             \hline
-            State: $s_t$ & $x_t$ \\
-            Observation: $o_t$ & $y_t$ \\
+            State: $s_t$ & State: $x_t$ \\
+            Observation: $o_t$ & Observation: $y_t$ \\
             Action: $a_t$ & Input: $u_t$ \\
             Reward: $r_t$ & Stage cost: $\ell(x_t, u_t)$ \\
+            Episode: $\tau = (s_0, a_0, \ldots)$ & Trajectory: $\tau = (x_0, u_0, \ldots)$ \\
             Return: $\max R(\tau) = \sum_{t \in \tau} r_t$ & Cost: $\min J(\tau) = \sum_{t \in \tau} \ell(x_t, u_t)$ \\
             Model: $s_{t+1} = f(s_t, a_t)$ & Dynamics: $x_{t+1} = f(x_t, u_t)$ \\
         \end{tabular}
@@ -261,7 +279,7 @@
     An algorithm with a policy (actor) and a value function (critic) is called \emph{actor-critic}. If it doesn't use a model, it is \emph{model-free}. If it has one (e.g. chess, go), it is \emph{model-based}.
 \end{frame}
 
-\begin{frame}[fragile]{Example: reward's triangle}
+\begin{frame}[fragile]{Example: a rewarding triangle}
     \begin{columns}
         \begin{column}{0.50\columnwidth}
             Environment:
@@ -324,6 +342,24 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{A taxonomy of RL algorithms}
+    \begin{figure}
+        \includegraphics[height=6cm]{figures/taxonomy.png}
+    \end{figure}
+    \blfootnote{
+        Source: \url{https://spinningup.openai.com/en/latest/spinningup/rl_intro2.html}
+    }
+\end{frame}
+
+\begin{frame}{A taxonomy of RL algorithms}
+    \begin{figure}
+        \includegraphics[height=6cm]{figures/taxonomy-focus.png}
+    \end{figure}
+    \blfootnote{
+        Our focus in this class.
+    }
+\end{frame}
+
 \section{Policy gradient algorithms}
 
 \begin{frame}{Policy-based algorithms}
@@ -339,22 +375,122 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Policy gradient theorem}
-    ...
+\begin{frame}{REINFORCE}
+    \begin{block}{REINFORCE algorithm}
+        \begin{itemize}
+            \item \textbf{Input:} differentiable policy $\pi_\theta(a | s)$ parameterized by $\theta \in \mathbb{R}^n$
+            \item \textbf{Parameter:} step size $\alpha > 0$
+            \item Initialize policy parameters $\theta$ (e.g. to $0$)
+            \item Loop forever (for each episode):
+                \begin{itemize}
+                    \item Roll out an episode $\tau = (s_0, a_0, \ldots, s_{N}, a_{N})$ following $\pi_\theta$
+                    \item For each step $t \in \tau$:
+                        \begin{itemize}
+                            \item $R \leftarrow \sum_{t' = t + 1}^N \gamma^{t' - t - 1} r_{t'}$
+                            \item $\theta \leftarrow \theta + \alpha \gamma^t R \nabla_\theta \log \pi_\theta(a_t | s_t)$
+                        \end{itemize}
+                \end{itemize}
+        \end{itemize}
+    \end{block}
+    \blfootnote{
+        See~\cite{sutton2018}, Chapter 13.
+    }
 \end{frame}
 
-\begin{frame}{The Gymnasium API}
-    \begin{itemize}
-        \item API for single-agent reinforcement learning environments
-        \item Widespread, not necessarily the best one out there
-    \end{itemize}
+\begin{frame}{Why this update rule}
+    \LARGE
+    $$
+    \theta \leftarrow \theta + \alpha \gamma^t R \nabla_\theta \log \pi_\theta(a_t | s_t) ?
+    $$
 \end{frame}
 
-\begin{frame}{Domain randomization}
-    ...
+\begin{frame}{Remember the goal}
+    The goal of RL is to find a \emph{policy} that \emph{maximizes} the expected return:
+    $$
+    J(\theta) = \max_\theta \mathbb{E}_{\tau \sim \pi_\theta}[R(\tau)]
+    $$
+    We do so by gradient ascent:
+    $$
+    \theta_{k+1} = \theta_k + \alpha \nabla_\theta J(\theta_k)
+    $$
+    The gradient $\nabla_\theta J$ with respect to policy parameters $\theta$ is called the \emph{policy gradient}.
 \end{frame}
 
-\begin{frame}{Reward vocabulary}
+\begin{frame}{Remember the goal}
+    \begin{block}{Theorem}
+        The policy gradient can be computed from rewards $R(\tau)$ and the log-policy gradient $\nabla_\theta \log \pi_\theta$ as:
+        \begin{equation*}
+            \nabla_\theta J(\theta) = \mathbb{E}_{\tau \sim \pi_\theta} \left( 
+            R(\tau)
+            \sum_{s_t, a_t \in \tau} \nabla_\theta \log \pi_\theta(a_t | s_t)
+            \right)
+        \end{equation*}
+    \end{block}
+    LHS: the graal. RHS: things we observe ($R(\tau)$) or know by design ($\nabla_\theta \log \pi_\theta$).
+
+    \textbf{Proof:} blackboard.
+\end{frame}
+
+\begin{frame}{Back to REINFORCE}
+    Gradient ascent:
+    $$
+    \theta_{k+1} = \theta_k + \alpha \nabla_\theta J(\theta_k)
+    $$
+    From the policy gradient theorem, this is equivalent to:
+    $$
+    \theta_{k+1} = \theta_k + \alpha \mathbb{E}_{\tau \sim \pi_\theta} \left( 
+            R(\tau)
+            \sum_{s_t, a_t \in \tau} \nabla_\theta \log \pi_\theta(a_t | s_t)
+            \right)
+    $$
+    REINFORCE drops the expectation:
+    $$
+    \theta_{k+1} = \theta_k + \alpha R(\tau_k) \sum_{s_t, a_t \in \tau_k} \nabla_\theta \log \pi_\theta(a_t | s_t)
+    $$
+\end{frame}
+
+\begin{frame}{Vanilla policy gradient}
+    \begin{figure}
+        \includegraphics[height=6.5cm]{genfig/vanilla-policy-gradient.pdf}
+    \end{figure}
+    \vspace{-0.5cm}
+    \blfootnote{
+        Source: \url{https://spinningup.openai.com/en/latest/algorithms/vpg.html}
+    }
+\end{frame}
+
+\begin{frame}{Proximal policy optimization}
+    \begin{figure}
+        \includegraphics[height=6.5cm]{genfig/ppo.pdf}
+    \end{figure}
+    \vspace{-0.5cm}
+    \blfootnote{
+        Source: \url{https://spinningup.openai.com/en/latest/algorithms/ppo.html}
+    }
+\end{frame}
+
+\begin{frame}{Let's practice!}
+    \begin{figure}
+        \includegraphics[width=0.99\columnwidth]{figures/gymnasium-sb3.png}
+    \end{figure}
+\end{frame}
+
+\section{Application to robotics}
+
+\begin{frame}{2020: Quadrupedal locomotion~\cite{lee2020}}
+    \vspace{1.5em}
+    \begin{figure}
+        \includegraphics[height=5.5cm]{figures/hike-with-anymal.jpg}
+    \end{figure}
+    \begin{center}
+        Teacher-student, residual reinforcement learning
+    \end{center}
+    \blfootnote{
+        Video: \url{https://youtu.be/oPNkeoGMvAE}
+    }
+\end{frame}
+
+\begin{frame}{Reward formulations}
     Let $r_e$ denote the reward associated with an error function $e$:
 
     Motivation:
@@ -369,15 +505,19 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Domain randomization}
+    ...
+\end{frame}
+
 \begin{frame}{Environment bounds}
     \begin{figure}
-        \includegraphics[width=\columnwidth]{genfig/max-accel.pdf}
+        \includegraphics[width=0.99\columnwidth]{genfig/max-accel.pdf}
     \end{figure}
 \end{frame}
 
 \begin{frame}{Caveat: stochastic}
     \begin{figure}
-        \includegraphics[width=\columnwidth]{genfig/max-accel-bis.pdf}
+        \includegraphics[width=0.99\columnwidth]{genfig/max-accel-bis.pdf}
     \end{figure}
 \end{frame}
 
@@ -392,21 +532,18 @@
     not always a good thing! see figure
 \end{frame}
 
-\begin{frame}{Other entries in the cookbook}
+\section{Conclusion}
+
+\begin{frame}{What we saw}
     \begin{itemize}
-        \item Add a temporary reward $r_{bias}$, remove it once $r = \sum_i r_i$ reaches 50\% of the maximum reward (done \emph{e.g.} in~\cite{rudin2022advanced}).
+        \item Partially-observable Markov decision process (POMPD)
+        \item The goal of reinforcement learning
+        \item Model, policy and value function
+        \item Policy gradient algorithm
+        \item Application to robotics: residual RL, sim2real, domain randomization
+        \item RL is not magic: great results but possibly going to great lengths!
     \end{itemize}
 \end{frame}
-
-\begin{frame}{That's all folks!}
-    \vspace{2em}
-    \begin{figure}
-        \centering
-        \includegraphics[height=10em]{genfig/thanks.pdf}
-    \end{figure}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section*{Bibliography}
 
@@ -414,39 +551,6 @@
 \setbeamertemplate{bibliography item}{\insertbiblabel}
 \begin{frame}[allowframebreaks]{References}
     \printbibliography[heading=none]
-\end{frame}
-
-\section*{Templates}
-
-\begin{frame}[fragile]{Python code}
-    Load a robot description:
-    \begin{minted}{python}
-        from robot_descriptions.loaders.pinocchio import load_robot_description
-
-        robot = load_robot_description("upkie_description")
-    \end{minted}
-    Visualize it:
-    \begin{columns}
-        \begin{column}{0.75\columnwidth}
-            \begin{minted}{python}
-                from pinocchio.visualize import MeshcatVisualizer
-
-                robot.setVisualizer(MeshcatVisualizer())
-                robot.initViewer(open=True)
-                robot.loadViewerModel()
-                robot.display(robot.q0)
-            \end{minted}
-        \end{column}
-        \begin{column}{0.24\columnwidth}
-            \begin{figure}
-                \centering
-                % \includegraphics[width=\columnwidth]{figures/upkie_description.png}
-            \end{figure}
-        \end{column}
-    \end{columns}
-    \blfootnote{
-        Setup: \mintinline{bash}{pip install meshcat pin robot_descriptions}
-    }
 \end{frame}
 
 \end{document}
