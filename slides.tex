@@ -425,6 +425,16 @@
 \section{Application to robotics}
 
 \begin{frame}{Quadrupedal locomotion~\cite{lee2020}}
+    \begin{itemize}
+        \item Residual reinforcement learning
+        \item Hybrid physics/data-based simulation
+        \item Domain randomization
+        \item Observation and action noise
+        \item Reward shaping
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Quadrupedal locomotion~\cite{lee2020}}
     \vspace{1.5em}
     \begin{figure}
         \includegraphics[height=5.5cm]{figures/hike-with-anymal.jpg}
@@ -496,7 +506,11 @@
 \end{frame}
 
 \begin{frame}{Domain randomization}
-    ...
+    Randomize selected environment parameters
+    \begin{itemize}
+        \item Physical properties: geometry, inertias
+        \item Initial state
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Environment bounds}
@@ -511,12 +525,12 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}{Normalizing observations}
-    \begin{itemize}
-        \item Normalizing:
-        \item Standardizing:
-    \end{itemize}
-\end{frame}
+% \begin{frame}{Normalizing observations}
+%     \begin{itemize}
+%         \item Normalizing:
+%         \item Standardizing:
+%     \end{itemize}
+% \end{frame}
 
 \begin{frame}{Challenges for RL}
     \begin{itemize}
@@ -536,8 +550,8 @@
         \item The goal of reinforcement learning
         \item Model, policy and value function
         \item Policy gradient algorithm
-        \item Application to robotics: residual RL, sim2real, domain randomization
-        \item RL is not magic: great results, but possibly going to great lengths!
+        \item Application to robotics: residual RL, randomization, noise, rewart
+        \item RL is not magic: great results, possibly going to great lengths!
     \end{itemize}
 \end{frame}
 
