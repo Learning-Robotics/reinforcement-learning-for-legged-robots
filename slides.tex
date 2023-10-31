@@ -221,7 +221,7 @@
         import numpy as np
 
         with gym.make("UpkieGroundVelocity-v1", frequency=200.0) as env:
-            env.reset() 
+            env.reset()
             action = np.zeros(env.action_space.shape)
             for step in range(1_000_000):
                 observation, reward, terminated, truncated, _ = env.step(action)
@@ -358,7 +358,7 @@
     \begin{block}{Theorem}
         The policy gradient can be computed from rewards $R(\tau)$ and the log-policy gradient $\nabla_\theta \log \pi_\theta$ as:
         \begin{equation*}
-            \nabla_\theta J(\theta) = \mathbb{E}_{\tau \sim \pi_\theta} \left( 
+            \nabla_\theta J(\theta) = \mathbb{E}_{\tau \sim \pi_\theta} \left(
             R(\tau)
             \sum_{s_t, a_t \in \tau} \nabla_\theta \log \pi_\theta(a_t | s_t)
             \right)
@@ -376,7 +376,7 @@
     $$
     From the policy gradient theorem, this is equivalent to:
     $$
-    \theta_{k+1} = \theta_k + \alpha \mathbb{E}_{\tau \sim \pi_\theta} \left( 
+    \theta_{k+1} = \theta_k + \alpha \mathbb{E}_{\tau \sim \pi_\theta} \left(
             R(\tau)
             \sum_{s_t, a_t \in \tau} \nabla_\theta \log \pi_\theta(a_t | s_t)
             \right)
@@ -426,11 +426,24 @@
 
 \begin{frame}{Quadrupedal locomotion~\cite{lee2020}}
     \begin{itemize}
+        \item Observation-action normalization
         \item Residual reinforcement learning
         \item Hybrid physics/data-based simulation
         \item Domain randomization
         \item Observation and action noise
         \item Reward shaping
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Normalization}
+    Specific to deep RL:
+    \begin{itemize}
+        \item Normalize the observation space when you can, \emph{e.g.} bounded physical quantities.
+        \item Normalize the action space: a common practice is to rescale it to $[-1, 1]$.
+    % \item start with shaped reward (i.e. informative reward) and simplified version of your problem
+        \item Unnormalized action spaces won't work well with algorithms such as PPO that use Gaussian distributions in their policy outputs.
+        \item If limits are too large, sampled actions will cluster around zero, not exploiting the whole action space.
+        \item If limits are too small, sampled actions will saturate all the time, and we will only learn \emph{bang-bang} policies.
     \end{itemize}
 \end{frame}
 
