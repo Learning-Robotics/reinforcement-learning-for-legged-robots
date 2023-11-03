@@ -531,6 +531,16 @@
     ...
 \end{frame}
 
+\begin{frame}{Action smoothing}
+    \begin{itemize}
+        \item Stochastic policies have Gaussian outputs (includes exploration noise)
+        \item We can make outputs deterministic but policies still jitter
+        \item \textbf{Proposed solution:} \emph{smoothen} policy outputs~\cite{peng2020learning}
+        \item \textbf{Caveat:} dependency on action history, breaks out of MDP model
+        \item Next step: observation and action history to restore Markov property
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{Environment bounds}
     \begin{figure}
         \centering
