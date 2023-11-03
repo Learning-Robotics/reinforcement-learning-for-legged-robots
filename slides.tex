@@ -436,14 +436,15 @@
 \end{frame}
 
 \begin{frame}{Normalization}
-    Specific to deep RL:
+    Specific to deep RL, normalize the:
     \begin{itemize}
-        \item Normalize the observation space when you can, \emph{e.g.} bounded physical quantities.
-        \item Normalize the action space: a common practice is to rescale it to $[-1, 1]$.
-    % \item start with shaped reward (i.e. informative reward) and simplified version of your problem
-        \item Unnormalized action spaces won't work well with algorithms such as PPO that use Gaussian distributions in their policy outputs.
-        \item If limits are too large, sampled actions will cluster around zero, not exploiting the whole action space.
-        \item If limits are too small, sampled actions will saturate all the time, and we will only learn \emph{bang-bang} policies.
+        \item \textbf{Observation space:} bound physical quantities, when possible.
+        \item \textbf{Action space:} rescaling to $[-1, 1]$ is common practice.
+    \end{itemize}
+    Unnormalized actions don't work well on actors with Gaussian outputs (as in PPO):
+    \begin{itemize}
+        \item Limits too large $\Rightarrow$ sampled actions cluster around zero.
+        \item Limits too small $\Rightarrow$ sampled actions saturate all the time, \emph{bang-bang} behavior.
     \end{itemize}
 \end{frame}
 
