@@ -1,4 +1,4 @@
-\documentclass[11pt, aspectratio=169]{beamer}
+\documentclass[10pt, aspectratio=1610]{beamer}
 
 \usepackage{amsmath}
 \usepackage[lined]{algorithm2e}
@@ -113,32 +113,28 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Robots with policies trained by RL}
+\section*{Some RL-trained control policies}
 
-\begin{frame}{2020: Quadrupedal locomotion~\cite{lee2020}}
+\begin{frame}{2020: Quadrupedal locomotion}
     \vspace{1.5em}
     \begin{figure}
-        \includegraphics[height=5.5cm]{figures/hike-with-anymal.jpg}
+        \includegraphics[height=5cm]{figures/hike-with-anymal.jpg}
     \end{figure}
     \begin{center}
-        Teacher-student, residual reinforcement learning
+        Teacher-student residual reinforcement learning~\cite{lee2020}
     \end{center}
-    \blfootnote{
-        Video: \url{https://youtu.be/oPNkeoGMvAE}
-    }
+    \blfootnote{Video: \url{https://youtu.be/oPNkeoGMvAE}}
 \end{frame}
 
 \begin{frame}{2018: In-hand reorientation}
     \vspace{1.5em}
     \begin{figure}
-        \includegraphics[height=5.5cm]{figures/in-hand-reorientation.jpg}
+        \includegraphics[height=5cm]{figures/in-hand-reorientation.jpg}
     \end{figure}
     \begin{center}
-        Domain randomization, LSTM policy
+        LSTM policy with domain randomization~\cite{andrychowicz2020learning}
     \end{center}
-    \blfootnote{
-        Video: \url{https://youtu.be/jwSbzNHGflM}
-    }
+    \blfootnote{Video: \url{https://youtu.be/jwSbzNHGflM}}
 \end{frame}
 
 \begin{frame}{2010: Helicopter stunts}
@@ -147,21 +143,20 @@
         \includegraphics[height=3.5cm]{figures/helicopter-stunts.jpg}
     \end{figure}
     \begin{center}
-        Autonomous Helicopter Aerobatics through Apprenticeship Learning~\cite{abbeel2010}
+        Helicopter aerobatics through apprenticeship learning~\cite{abbeel2010}
     \end{center}
-    \blfootnote{
-        Video: \url{https://youtu.be/M-QUkgk3HyE}
-    }
+    \blfootnote{Video: \url{https://youtu.be/M-QUkgk3HyE}}
 \end{frame}
 
-\begin{frame}{1997: Pendulum swing up~\cite{atkeson1997}}
+\begin{frame}{1997: Pendulum swing up}
     \vspace{1.5em}
     \begin{figure}
         \includegraphics[height=3.5cm]{genfig/atkeson-demo.pdf}
     \end{figure}
-    \blfootnote{
-        Video: \url{https://youtu.be/g3I2VjeSQUM?t=294}
-    }
+    \begin{center}
+        Swinging up an inverted pendulum from human demonstrations~\cite{atkeson1997}
+    \end{center}
+    \blfootnote{ Video: \url{https://youtu.be/g3I2VjeSQUM?t=294} }
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -170,70 +165,102 @@
 
 \begin{frame}{Scope}
     \begin{figure}
-        \includegraphics[height=5cm]{genfig/agent-environment.pdf}
+        \includegraphics[height=4.5cm]{genfig/agent-environment.pdf}
     \end{figure}
 \end{frame}
 
 \begin{frame}{Rewards}
     \begin{figure}
-        \includegraphics[height=5.5cm]{figures/stable-baselines3-logo.png}
+        \includegraphics[height=5cm]{figures/stable-baselines3-logo.png}
     \end{figure}
     \blfootnote{
         Image credit: L. M. Tenkes, source: \url{https://araffin.github.io/post/sb3/}
     }
 \end{frame}
 
-\begin{frame}{Model of the environment}
+\begin{frame}{Partially observable Markov decision process (1/2)}
+    \begin{figure}
+        \includegraphics[height=3.5cm]{genfig/pomdp1.pdf}
+    \end{figure}
     \begin{itemize}
         \item \textbf{State:} $s_t$, ground truth of the environment
-        \item \textbf{Action:} $a_t$, decision of the agent
+        \item \textbf{Action:} $a_t$, decision of the agent (discrete or continuous)
         \item \textbf{Observation:} $o_t$, \emph{partial} estimation of the state from sensors
         \item \textbf{Reward:} $r_t \in \mathbb{R}$, scalar feedback, often $r_t = r(s_t, a_t)$ or $r(s_t, a_t, s_{t+1})$
     \end{itemize}
     \vspace{-1em}
+\end{frame}
+
+\begin{frame}{Partially observable Markov decision process (2/2)}
+    \begin{figure}
+        \includegraphics[height=4.5cm]{genfig/pomdp2.pdf}
+    \end{figure}
     \begin{table}
         \begin{tabular}{rlll}
             & \emph{Deterministic} & \emph{Stochastic} \\
             \hline
             \textbf{Model:} & $s_{t+1} = f(s_t, a_t)$ & $s_{t+1} \sim p(\cdot | s_t, a_t)$ & how the environment evolves \\
             \textbf{Initial state:} & $s_0$ & $s_0 \sim \rho_0(\cdot)$ & where we start from \\
-            \textbf{Observation:} & $o_t = h(s_t)$ & $o_t \sim z(\cdot | s_t)$ & how sensors measure the world
+            \textbf{Observation:} & $o_t = h(s_t)$ & $o_t \sim z(\cdot | s_t)$ & how sensors measure the world \\
+            \textbf{Policy:} & $a_t = \pi(s_t)$ & $a_t \sim \pi(\cdot | s_t)$ & what the agent decides
         \end{tabular}
     \end{table}
-    Altogether: partially-observable Markov decision process (POMPD).
-\end{frame}
-
-\begin{frame}{Model of the agent}
-    A couple more definitions:
-    \begin{itemize}
-        \item \textbf{Episode:} $\tau = (s_0, a_0, s_1, a_1, \ldots)$
-        \item \textbf{Return:} $R(\tau) = \sum_{t \in \tau} r_t$ or with discount $\gamma \in ]0, 1[$: $R(\tau) = \sum_{t \in \tau} \gamma^t r_t$
-    \end{itemize}
-    Finally, our model of the agent:
-    \begin{itemize}
-        \item \textbf{Policy:} agent decisions, deterministic $a_t = \pi(s_t)$ or stochastic $a_t \sim \pi(\cdot | s_t)$
-    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Example: The Gymnasium API}
+    \begin{figure}
+        \includegraphics[height=2.5cm]{figures/cart-pole.png}
+    \end{figure}
     \begin{minted}{python}
         import gymnasium as gym
-        import numpy as np
+
+        with gym.make("CartPole-v1", render_mode="human") as env:
+            env.reset()
+            action = env.action_space.sample()
+            for step in range(1000):
+                observation, reward, terminated, truncated, _ = env.step(action)
+                if terminated or truncated:
+                    observation, _ = env.reset()
+                cart_position = observation[0]
+                action = env.action_space.sample()
+    \end{minted}
+\end{frame}
+
+\begin{frame}[fragile]{Same API on robots}
+    \begin{figure}
+        \includegraphics[height=2.5cm]{figures/upkie-sim-real.png}
+    \end{figure}
+    \begin{minted}{python}
+        import gymnasium as gym
 
         with gym.make("UpkieGroundVelocity-v1", frequency=200.0) as env:
             env.reset()
-            action = np.zeros(env.action_space.shape)
+            action = 0.0 * env.action_space.sample()
             for step in range(1_000_000):
                 observation, reward, terminated, truncated, _ = env.step(action)
                 if terminated or truncated:
                     observation, _ = env.reset()
                 pitch = observation[0]
-                action[0] = 10.0 * pitch  # 1D action: [ground_velocity]
+                action[0] = 10.0 * pitch  # action is [ground_velocity]
     \end{minted}
 \end{frame}
 
-\begin{frame}{Goal}
-    The goal of reinforcement learning is to find a \emph{policy} that \emph{maximizes} return:
+\begin{frame}{Goal of reinforcement learning}
+    Two last definitions:
+    \begin{itemize}
+        \item \textbf{Episode:} $\tau = (s_0, a_0, s_1, a_1, \ldots)$
+        \item \textbf{Return:} $R(\tau) = \sum_{t \in \tau} r_t$ or with discount $\gamma \in ]0, 1[$: $R(\tau) = \sum_{t \in \tau} \gamma^t r_t$
+    \end{itemize}
+    We can now state what reinforcement learning is about:
+
+    \vspace{1ex}
+    \begin{block}{Goal of reinforcement learning}
+        The goal of reinforcement learning is to \emph{find a policy that maximizes returns}.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Stochastic reinforcement learning}
+    In the stochastic setting, the goal of reinforcement learning is:
     \begin{align*}
         \max_{\pi} \ & \mathbb{E}_{\tau} [R(\tau)] \\
         \mathrm{s.t.} \ & \tau = (s_0, a_0, s_1, a_1, \ldots) \\
@@ -242,32 +269,23 @@
         & s_1 \sim f(\cdot | s_0, a_0) \\
         & \vdots
     \end{align*}
-    \textbf{Shorthand:} $\max_\pi \mathbb{E}_{\tau \sim \pi}[R(\tau)]$.
-\end{frame}
-
-\begin{frame}{Parallel with control theory}
-    \begin{table}
-        \begin{tabular}{ll}
-            \textbf{Reinforcement learning} & \textbf{Control theory} \\
-            \hline
-            State: $s_t$ & State: $x_t$ \\
-            Observation: $o_t$ & Observation: $y_t$ \\
-            Action: $a_t$ & Input: $u_t$ \\
-            Reward: $r_t$ & Stage cost: $\ell(x_t, u_t)$ \\
-            Episode: $\tau = (s_0, a_0, \ldots)$ & Trajectory: $\tau = (x_0, u_0, \ldots)$ \\
-            Return: $\max R(\tau) = \sum_{t \in \tau} r_t$ & Cost: $\min J(\tau) = \sum_{t \in \tau} \ell(x_t, u_t)$ \\
-            Model: $s_{t+1} = f(s_t, a_t)$ & Dynamics: $x_{t+1} = f(x_t, u_t)$ \\
-        \end{tabular}
-    \end{table}
 \end{frame}
 
 \begin{frame}{Value functions}
     State value functions:
     \begin{itemize}
-        \item \textbf{On-policy value function:} return we can expect from a given policy: $V^\pi(s) = \mathbb{E}_{\tau \sim \pi}(R(\tau) | s_0 = s)$
-        \item \textbf{Optimal value function:} best return we can expect from a state: $V^*(s) = \max_\pi \mathbb{E}_{\tau \sim \pi}(R(\tau) | s_0 = s)$
+        \item \textbf{On-policy:} return we can expect from a given policy: $V^\pi(s) = \mathbb{E}_{\tau \sim \pi}(R(\tau) | s_0 = s)$
+        \item \textbf{Optimal:} best return we can expect from a state: $V^*(s) = \max_\pi \mathbb{E}_{\tau \sim \pi}(R(\tau) | s_0 = s)$
     \end{itemize}
     There are also state-action value functions $Q^\pi(s, a)$ and $Q^*(s, a)$.
+
+    Value functions satisfy the Bellman equation:
+    \begin{block}{Bellman equation}
+        \[
+            V^*(s) = \max_\pi \mathbb{E}_{a \sim \pi(\cdot | s), (r, s') \sim p(s' | s, a)}[r + \gamma V^*(s')]
+        \]
+    \end{block}
+    This is a connection to optimal control (\emph{e.g.} differential dynamic programming) and Q-learning, but not our topic thereafter.
 \end{frame}
 
 \begin{frame}{Components of an RL algorithm}
@@ -277,7 +295,9 @@
         \item \textbf{Value function:} evaluation of states
         \item \textbf{Model:} representation of the environment
     \end{itemize}
-    An algorithm with a policy (actor) and a value function (critic) is called \emph{actor-critic}. If it doesn't use a model, it is \emph{model-free}. If it has one (e.g. chess, go), it is \emph{model-based}.
+    An algorithm with a policy (actor) and a value function (critic) is called \emph{actor-critic}.
+
+    An algorithm with/without a model is called \emph{model-based}/\emph{free}.
 \end{frame}
 
 \begin{frame}{A taxonomy of RL algorithms}
@@ -294,11 +314,11 @@
         \includegraphics[height=6cm]{figures/taxonomy-focus.png}
     \end{figure}
     \blfootnote{
-        Our focus in this class.
+        Our focus from there on.
     }
 \end{frame}
 
-\section{Policy gradient algorithms}
+\section{Policy optimization}
 
 \begin{frame}{Policy-based algorithms}
     Policy-based algorithms update a policy iteratively. At each iteration $k$:
@@ -333,13 +353,6 @@
     \blfootnote{
         See~\cite{sutton2018}, Chapter 13.
     }
-\end{frame}
-
-\begin{frame}{Why this update rule}
-    \LARGE
-    $$
-    \theta \leftarrow \theta + \alpha \gamma^t R \nabla_\theta \log \pi_\theta(a_t | s_t) ?
-    $$
 \end{frame}
 
 \begin{frame}{Remember the goal}
@@ -414,12 +427,6 @@
     \blfootnote{
         Source: \url{https://spinningup.openai.com/en/latest/algorithms/ppo.html}
     }
-\end{frame}
-
-\begin{frame}{Let's practice!}
-    \begin{figure}
-        \includegraphics[width=0.99\columnwidth]{figures/gymnasium-sb3.png}
-    \end{figure}
 \end{frame}
 
 \section{Application to robotics}
@@ -593,69 +600,28 @@
     \printbibliography[heading=none]
 \end{frame}
 
-\section*{Bonus: a rewarding triangle}
+\section*{Extra slides}
 
-\begin{frame}[fragile]{A rewarding triangle}
-    \begin{columns}
-        \begin{column}{0.50\columnwidth}
-            Environment:
-            \begin{itemize}
-                \item States: discrete triangle $\{(i, j), 0 \leq i < N, i \leq j \}$
-                \item Rewards: $r_{i, j} \in \mathbb{N}$
-                \item Initial state: $(0, 0)$
-                \item Actions: $(i, j) \to (i + 1, j)$ or $(i, j) \to (i + 1, j + 1)$
-            \end{itemize}
-            What is the best return we can collect?
-        \end{column}
-        \begin{column}{0.50\columnwidth}
-            Input: (first integer: $N$, then $N$ lines)
-            \begin{minted}{bash}
-                3
-                1
-                2 3
-                4 5 6
-            \end{minted}
-            Output:
-            \begin{minted}{bash}
-                best_return=10
-            \end{minted}
-        \end{column}
-    \end{columns}
-    \blfootnote{
-        Inputs: \url{https://scaron.info/robotique-mareva/triangles.zip}
-    }
+\begin{frame}{Parallel with control theory}
+    \begin{table}
+        \begin{tabular}{ll}
+            \textbf{Reinforcement learning} & \textbf{Control theory} \\
+            \hline
+            State: $s_t$ & State: $x_t$ \\
+            Observation: $o_t$ & Observation: $y_t$ \\
+            Action: $a_t$ & Input: $u_t$ \\
+            Reward: $r_t$ & Stage cost: $\ell(x_t, u_t)$ \\
+            Episode: $\tau = (s_0, a_0, \ldots)$ & Trajectory: $\tau = (x_0, u_0, \ldots)$ \\
+            Return: $\max R(\tau) = \sum_{t \in \tau} r_t$ & Cost: $\min J(\tau) = \sum_{t \in \tau} \ell(x_t, u_t)$ \\
+            Model: $s_{t+1} = f(s_t, a_t)$ & Dynamics: $x_{t+1} = f(x_t, u_t)$ \\
+        \end{tabular}
+    \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Your turn...}
-    \begin{minted}{python}
-        import numpy as np
-
-        def value(triangle: np.ndarray, state: tuple) -> int:
-            pass  # your job
-
-        size = int(input())
-        triangle = np.zeros((size, size), dtype=int)
-        for row in range(size):
-            rewards = [int(s) for s in input().split(" ")]
-            for col, reward in enumerate(rewards):
-                triangle[row, col] = reward
-
-        best_return = value(triangle, state=(0, 0))
-        print(f"{best_return=}")
-    \end{minted}
-\end{frame}
-
-\begin{frame}{Example summary}
-    \begin{itemize}
-        \item \textbf{States:} triangle
-        \item \textbf{Actions:} down or down-right
-        \item \textbf{Observations:} full state
-        \item \textbf{Model:} yes
-        \item \textbf{Initial state:} $(0, 0)$
-        \item \textbf{Value function:} yes
-        \item \textbf{Policy:} greedy from value function
-        \item \textbf{Return:} maximized
-    \end{itemize}
+\begin{frame}{Let's practice!}
+    \begin{figure}
+        \includegraphics[width=0.99\columnwidth]{figures/gymnasium-sb3.png}
+    \end{figure}
 \end{frame}
 
 \end{document}
