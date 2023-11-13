@@ -229,7 +229,7 @@
     \end{minted}
 \end{frame}
 
-\begin{frame}[fragile]{Same API on robots}
+\begin{frame}[fragile]{Same API for simulation and real robots}
     \begin{figure}
         \includegraphics[height=2.5cm]{figures/upkie-sim-real.png}
     \end{figure}
@@ -251,7 +251,7 @@
 \begin{frame}{Goal of reinforcement learning}
     Two last definitions:
     \begin{itemize}
-        \item \textbf{Episode:} $\tau = (s_0, a_0, s_1, a_1, \ldots)$
+        \item \textbf{Episode:} $\tau = (s_0, a_0, r_0, s_1, a_1, r_1, \ldots)$
         \item \textbf{Return:} $R(\tau) = \sum_{t \in \tau} r_t$ or with discount $\gamma \in ]0, 1[$: $R(\tau) = \sum_{t \in \tau} \gamma^t r_t$
     \end{itemize}
     We can now state what reinforcement learning is about:
