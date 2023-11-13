@@ -17,6 +17,11 @@
 \usefonttheme{professionalfonts}
 \usepackage{theme/beamercolorthememetropolisinria}
 
+\setbeamertemplate{frame footer}{\insertshortauthor~(\insertshortinstitute)\hfill{\textbf{MVA:} }\insertshorttitle\hfill}
+%\setbeamertemplate{frame footer}{\insertshortauthor\hfill\vrule\hfill\insertpagenumber}
+\setbeamerfont{page number in head/foot}{size=\tiny}
+\setbeamercolor{footline}{fg=gray}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Syntax highlighting
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -105,7 +110,7 @@
 
 \author{\textbf{St\'ephane Caron}}
 \date{\today}
-\institute{Inria--\'{E}cole normale sup\'{e}rieure}
+\institute{Inria, \'{E}cole normale sup\'{e}rieure}
 
 \begin{document}
 
@@ -592,6 +597,10 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}[standout]
+Thank you for your attention!
+\end{frame}
+
 \section*{Bibliography}
 
 \renewcommand*{\bibfont}{\footnotesize}
@@ -600,7 +609,7 @@
     \printbibliography[heading=none]
 \end{frame}
 
-\section*{Extra slides}
+\section*{Backup slides}
 
 \begin{frame}{Parallel with control theory}
     \begin{table}
