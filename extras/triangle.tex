@@ -1,0 +1,64 @@
+\section*{Extra: a rewarding triangle}
+
+\begin{frame}[fragile]{A rewarding triangle}
+    \begin{columns}
+        \begin{column}{0.50\columnwidth}
+            Environment:
+            \begin{itemize}
+                \item States: discrete triangle $\{(i, j), 0 \leq i < N, i \leq j \}$
+                \item Rewards: $r_{i, j} \in \mathbb{N}$
+                \item Initial state: $(0, 0)$
+                \item Actions: $(i, j) \to (i + 1, j)$ or $(i, j) \to (i + 1, j + 1)$
+            \end{itemize}
+            What is the best return we can collect?
+        \end{column}
+        \begin{column}{0.50\columnwidth}
+            Input: (first integer: $N$, then $N$ lines)
+            \begin{minted}{bash}
+                3
+                1
+                2 3
+                4 5 6
+            \end{minted}
+            Output:
+            \begin{minted}{bash}
+                best_return=10
+            \end{minted}
+        \end{column}
+    \end{columns}
+    \blfootnote{
+        Inputs: \url{https://scaron.info/robotique-mareva/triangles.zip}
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Your turn...}
+    \begin{minted}{python}
+        import numpy as np
+
+        def value(triangle: np.ndarray, state: tuple) -> int:
+            pass  # your job
+
+        size = int(input())
+        triangle = np.zeros((size, size), dtype=int)
+        for row in range(size):
+            rewards = [int(s) for s in input().split(" ")]
+            for col, reward in enumerate(rewards):
+                triangle[row, col] = reward
+
+        best_return = value(triangle, state=(0, 0))
+        print(f"{best_return=}")
+    \end{minted}
+\end{frame}
+
+\begin{frame}{Example summary}
+    \begin{itemize}
+        \item \textbf{States:} triangle
+        \item \textbf{Actions:} down or down-right
+        \item \textbf{Observations:} full state
+        \item \textbf{Model:} yes
+        \item \textbf{Initial state:} $(0, 0)$
+        \item \textbf{Value function:} yes
+        \item \textbf{Policy:} greedy from value function
+        \item \textbf{Return:} maximized
+    \end{itemize}
+\end{frame}
