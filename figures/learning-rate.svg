@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="155.32585mm"
+   height="131.26898mm"
+   viewBox="0 0 155.32586 131.26899"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="learning-rate.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="1.4330386"
+     inkscape:cx="212.13664"
+     inkscape:cy="232.37336"
+     inkscape:window-width="1920"
+     inkscape:window-height="1041"
+     inkscape:window-x="0"
+     inkscape:window-y="19"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mstart"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mstart"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(0.4,0,0,0.4,4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path957" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Mend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(-0.6)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path978" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-66.123368,-59.920763)">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1Mstart);marker-end:url(#Arrow2Mend)"
+       d="M 75.442455,65.221656 V 181.16754 H 216.41785"
+       id="path869" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 75.834845,175.11516 c 4.011803,-1.57106 7.939735,-4.36521 11.617502,-10.80749 10.859659,-7.82746 17.856223,-16.71486 36.893853,-25.37856 29.2287,-28.8989 62.84541,-28.36604 95.4914,-34.34411"
+       id="path1260"
+       sodipodi:nodetypes="cccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;line-height:1.25;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';fill:#0000ff;stroke-width:0.264583"
+       x="162.09015"
+       y="101.77888"
+       id="text2892"><tspan
+         sodipodi:role="line"
+         id="tspan2890"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';fill:#0000ff;stroke-width:0.264583"
+         x="162.09015"
+         y="101.77888">low learning rate</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;line-height:1.25;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';stroke-width:0.264583"
+       x="-122.51781"
+       y="71.48394"
+       id="text4062"
+       transform="rotate(-90)"><tspan
+         sodipodi:role="line"
+         id="tspan4060"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';stroke-width:0.264583"
+         x="-122.51781"
+         y="71.48394">ep_rew_mean</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;line-height:1.25;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';fill:#808000;stroke-width:0.264583"
+       x="144.2086"
+       y="166.62256"
+       id="text6462"><tspan
+         sodipodi:role="line"
+         id="tspan6460"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';fill:#808000;stroke-width:0.264583"
+         x="144.2086"
+         y="166.62256">ludicrous learning rate</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;line-height:1.25;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';fill:#008000;stroke:none;stroke-width:0.264583"
+       x="159.14868"
+       y="132.22737"
+       id="text8556"><tspan
+         sodipodi:role="line"
+         id="tspan8554"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';fill:#008000;stroke:none;stroke-width:0.264583"
+         x="159.14868"
+         y="132.22737">high learning rate</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;line-height:1.25;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';fill:#ff0000;stroke-width:0.264583"
+       x="158.01556"
+       y="81.785469"
+       id="text10518"><tspan
+         sodipodi:role="line"
+         id="tspan10516"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';fill:#ff0000;stroke-width:0.264583"
+         x="158.01556"
+         y="81.785469">ideal learning rate</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;line-height:1.25;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';stroke-width:0.264583"
+       x="188.41533"
+       y="189.72214"
+       id="text11862"><tspan
+         sodipodi:role="line"
+         id="tspan11860"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;font-family:'CMU Sans Serif';-inkscape-font-specification:'CMU Sans Serif';stroke-width:0.264583"
+         x="188.41533"
+         y="189.72214">epochs</tspan></text>
+    <path
+       style="fill:none;stroke:#ff0000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 75.846809,175.11433 c 2.950632,-9.91529 1.882701,-18.48063 9.518138,-29.96968 3.210825,-12.00039 14.421214,-22.38387 23.414043,-33.21558 6.56293,-12.215585 18.50384,-13.059184 28.75621,-17.473268 27.08397,-7.999846 54.26427,-8.003705 81.43609,-8.711595"
+       id="path13019"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:none;stroke:#008000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 217.65523,118.62178 -34.23003,4.40841 -46.65891,-2.77486 -23.66918,5.82282 -25.248169,1.37928 -10.541284,24.04677 -1.472812,23.61096 v 0"
+       id="path13581"
+       sodipodi:nodetypes="cccccccc" />
+    <path
+       style="fill:none;stroke:#808000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 214.35145,175.28644 c -0.46224,-0.35729 -1.07726,-0.82151 -1.92349,-0.91044 -21.18647,-2.22649 -52.86977,2.24639 -70.25234,-3.1878 -12.21308,-1.07025 -19.82708,-0.87266 -33.19466,-3.12197 0.69963,-0.76452 -12.927611,-1.42722 -18.048785,-2.07429 -7.887316,1.10987 -11.794877,2.62466 -14.987111,4.21224"
+       id="path13819"
+       sodipodi:nodetypes="cscccc" />
+  </g>
+</svg>
