@@ -1,5 +1,6 @@
 \documentclass[10pt, aspectratio=1610]{beamer}
 
+\usepackage{adjustbox}
 \usepackage{amsmath}
 \usepackage[lined]{algorithm2e}
 \usepackage{booktabs}
@@ -17,8 +18,8 @@
 \usefonttheme{professionalfonts}
 \usepackage{theme/beamercolorthememetropolisinria}
 
-\setbeamertemplate{frame footer}{\insertshortauthor~(\insertshortinstitute)\hfill{\textbf{MVA:} }\insertshorttitle\hfill}
-%\setbeamertemplate{frame footer}{\insertshortauthor\hfill\vrule\hfill\insertpagenumber}
+%\setbeamertemplate{frame footer}{\insertshortauthor~(\insertshortinstitute)\hfill{\textbf{MVA:} }\insertshorttitle\hfill}
+\setbeamertemplate{frame footer}{{\textbf{Robotics at MVA:}}\insertshorttitle}
 \setbeamerfont{page number in head/foot}{size=\tiny}
 \setbeamercolor{footline}{fg=gray}
 
@@ -324,15 +325,15 @@
 \section{Policy optimization}
 
 \begin{frame}{Policy-based algorithms}
-    Policy-based algorithms update a policy iteratively. At each iteration $k$:
+    Policy-based algorithms update policy parameters $\theta$ iteratively. At each iteration $k$:
     \begin{itemize}
-        \item Collect trajectories $\mathcal{T}_k = \{ \tau \}$
+        \item Collect episodes $\mathcal{D}_k = \{ \tau \}$
         \item Update the policy $\pi_{k+1} = \mathit{update}(\pi_k, \mathcal{T}_k)$
     \end{itemize}
-    Two ways to collect trajectories:
+    Two ways to collect episodes:
     \begin{itemize}
-        \item \textbf{On-policy:} trajectories $\mathcal{T}_k$ are collected with the latest policy $\pi_k$
-        \item \textbf{Off-policy:} trajectories $\mathcal{T}_k$ are collected with any policy
+        \item \textbf{On-policy:} episodes $\mathcal{D}_k$ are collected with the latest policy $\pi_k$
+        \item \textbf{Off-policy:} episodes $\mathcal{D}_k$ are collected with any policy
     \end{itemize}
 \end{frame}
 
@@ -410,7 +411,7 @@
             \begin{algorithm}[H]
                 \KwData{initial policy parameters $\theta_0$, initial value function parameters $\phi_0$}
                 \For{$k = 0, 1, 2, \ldots$}{
-                    Collect trajectories $\mathcal{D}_k = \{ \tau_i \}$ by running $\pi_\theta = \pi(\theta_k)$\;
+                    Collect episodes $\mathcal{D}_k = \{ \tau_i \}$ by running $\pi_\theta = \pi(\theta_k)$\;
                     Compute rewards-to-go $\hat{R}_t$ and advantage estimates $\hat{A}_t$ based on $V_{\phi_k}$\;
                     Estimate the policy gradient as $$\hat{g}_k = \frac{1}{|\mathcal{D}_k|} \sum_{\tau \in \mathcal{D}_k} \sum_{t=0}^T \nabla_\theta \log \left.\pi_\theta(a_t | s_t)\right|_{\theta_k} \hat{A}_t$$
                     \hspace{-0.75em} Update policy parameters by \emph{e.g.} gradient ascent, $\theta_{k+1} = \theta_k + \alpha_k \hat{g}_k$\;
@@ -432,7 +433,7 @@
     }
 \end{frame}
 
-\section{Application to robotics}
+\section{Training with PPO}
 
 \begin{frame}{Training}
     \begin{figure}
@@ -440,10 +441,198 @@
     \end{figure}
 \end{frame}
 
+\begin{frame}{Environment}
+    \begin{figure}
+        \includegraphics[height=6.5cm]{genfig/training-env.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Rolling out episodes with a simulator}
+    \begin{figure}
+        \includegraphics[width=\columnwidth]{figures/upkie-training.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Curriculum}
+    \begin{figure}
+        \includegraphics[height=6.5cm]{genfig/training-curriculum.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Monitoring training}
+   \begin{adjustbox}{width=\paperwidth, height=\paperheight, keepaspectratio, center}
+       \includegraphics{figures/tensorboard.png}
+   \end{adjustbox}
+\end{frame}
+
+\begin{frame}{Training metrics}
+    \textbf{Rollout metrics:}
+    \begin{itemize}
+        \item \mintinline{python}{ep_len_mean}: average length of an episode, in number of environment steps.
+        \item \mintinline{python}{ep_rew_mean}: average return of an episode.
+    \end{itemize}
+    If training goes well, both eventually plateau at their maximum values.
+\end{frame}
+
 \begin{frame}{Training with PPO}
     \begin{figure}
         \includegraphics[height=6.5cm]{genfig/training-ppo.pdf}
     \end{figure}
+\end{frame}
+
+\begin{frame}{Monitoring PPO}
+   \begin{adjustbox}{width=\paperwidth, height=\paperheight, keepaspectratio, center}
+        \includegraphics[width=\columnwidth]{figures/tensorboard-ppo.png}
+   \end{adjustbox}
+\end{frame}
+
+\begin{frame}{PPO metrics}
+    \begin{itemize}
+        \item \mintinline{python}{approx_kl}: approximate KL divergence between the old policy and the new one. Should go down over training but won't reach zero.
+        \item \mintinline{python}{clip_fraction}: mean fraction of surrogate loss that was clipped (above the clip-range threshold).
+        \item \mintinline{python}{clip_range}: current value of the clipping factor for the surrogate loss
+        \item \mintinline{python}{explained_variance}: indicates whether the value function is a good predictor for returns (EV $> 1$) or if it’s just worse than predicting nothing (EV $\leq 0$).
+        \item \mintinline{python}{learning_rate}: Current learning rate value.
+        \item \mintinline{python}{n_updates}: Number of gradient updates applied so far.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{PPO loss function}
+    \begin{block}{Surrogate loss of PPO}
+        \mintinline{python}{loss = policy_loss + ent_coef * entropy_loss + vf_coef * value_loss}
+    \end{block}
+    \begin{itemize}
+        \item \mintinline{python}{loss}: surrogate loss, computed using the above formula.
+        \item \mintinline{python}{policy_gradient_loss}: regular loss resulting from episode returns.
+        \item \mintinline{python}{entropy_loss}: mean value of the entropy loss (negative of the average policy entropy). It should increase to zero over training as the policy becomes more deterministic.
+            \begin{itemize}
+                \item Minimum when all actions are equally likely.
+                \item Maxes out to zero when the same action is selected every time.
+                \item Ideally gets "close" to zero but not zero (keep a sane amount of exploration).
+            \end{itemize}
+        \item \mintinline{python}{value_loss}: value function estimation loss, \emph{i.e.} error between the output of the function estimator and Monte-Carlo or TD(GAE lambda) estimates.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Optimizer parameters: steps, epochs, mini-batching}
+    The optimizer behind PPO, usually Adam~\cite{kingma2014adam}, comes with parameters:
+    \begin{itemize}
+        \item \mintinline{python}{learning_rate}: step size initialization parameter.
+        \item \mintinline{python}{n_steps}: number of environment steps to collect per rollout buffer.
+        \item \mintinline{python}{n_epochs}: number of times we use a rollout buffer while optimizing the surrogate loss.
+        \item \mintinline{python}{batch_size}: mini-batch size, same as in Stochastic Gradient Descent.
+    \end{itemize}
+    \begin{figure}
+        \includegraphics[height=5cm]{genfig/learning-rate.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{PPO parameters: others}
+    \begin{itemize}
+        \item \mintinline{python}{clip_range}: clipping factor in policy loss.
+        \item \mintinline{python}{clip_range_vf}: ...
+        \item \mintinline{python}{ent_coef}: ...
+        \item \mintinline{python}{gae_lambda}: ...
+        \item \mintinline{python}{max_grad_norm}: ...
+        \item \mintinline{python}{net_arch_pi}: policy network architecture.
+        \item \mintinline{python}{net_arch_vf}: value network architecture.
+        \item \mintinline{python}{normalize_advantage}: use advantage normalization?
+        \item \mintinline{python}{sde_sample_freq}: ...
+        \item \mintinline{python}{target_kl}: ...
+        \item \mintinline{python}{use_sde}: ...
+        \item \mintinline{python}{vf_coef}: ...
+    \end{itemize}
+\end{frame}
+
+\section{Application to robotics}
+
+\begin{frame}{Example: Upkie ground velocity}
+    \begin{itemize}
+        \item $\theta$: pitch from torso to inertial frame.
+        \item $p$: ground position, estimated from wheel odometry.
+        \item Observation: $o = (\theta, p, \dot{\theta}, \dot{p})$.
+        \item Action: $v$ commanded ground velocity.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Domain randomization}
+    Randomize selected environment parameters:
+    \begin{itemize}
+        \item Robot geometry: limb lengths, wheel diameters, ...
+        \item Inertias: masses, mass distribution
+        \item Initial state: $s_0 \sim \rho_0(\cdot)$
+        \item Delays, actuator response models
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Curriculum}
+    \begin{itemize}
+        \item Domain randomization can vary over time (not clearly useful)
+        \item Learning rate schedule: evidence for linear
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Simulation pipeline}
+    \begin{figure}
+        \includegraphics[height=6cm]{figures/quadruped-sim-pipeline.png}
+    \end{figure}
+    \blfootnote{
+        Source:~\cite{hwangbo2019}
+    }
+\end{frame}
+
+\begin{frame}{Formulating a reward}
+    Let $r_e$ denote the reward associated with an error function $e$:
+
+    Motivation:
+    \begin{itemize}
+        \item Exponential: $r_e = \exp(-e^2)$
+    \end{itemize}
+
+    Penalization:
+    \begin{itemize}
+        \item Absolute value $r_e = -|e|$
+        \item Squared value: $r_e = -e^2$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{RewArt}
+    Making an RL pipeline work can lead to complex rewards, e.g. in~\cite{lee2020}:
+    \begin{itemize}
+        \item Linear velocity tracking: $r_{lv} = \exp(-2.0 (v_{pr} - 0.6)^2)$, or 1, or 0
+        \item Angular velocity tracking: $r_{av} = \exp(-1.5 (\omega_{pr} - 0.6)^2)$, or 1
+        \item Base motion tracking: $r_b = \exp(-1.5v_o^2) + \exp(-1.5 \|({}^B_{IB} \omega)_{xy}\|^2)$
+        \item Foot clearance: $r_{fc} = \sum_{i \in I_{swing}} \mathbf{1}_{fclear}(i) / |I_{swing}|$
+        \item Body-terrain collisions: $r_{bc} = -|I_{c,body} \textbackslash I_{c,foot}|$
+        \item Foot acceleration smoothness: $r_{s} = -\| (r_{f,d})_t - 2(r_{f,d})_{t-1} + (r_{f,d})_{t-2}\|$
+        \item Torque penalty: $r_{\tau} = -\sum_{i} | \tau_i |$
+    \end{itemize}
+    Final reward: $r = 0.05 r_{lv} + 0.05 r_{av} + 0.04 r_b + 0.01 r_{fc} + 0.02 r_{bc} + 0.025 r_s + 2 \cdot 10^{-5} r_{\tau}$
+\end{frame}
+
+\begin{frame}{Rewards}
+    RewArt is not a necessity: advocacy for simple rewards (e.g. Walk-in-the-park).
+
+    In the Upkie ground-velocity environment, we went for:
+    \begin{align*}
+        p_{\mathit{tip}} & = p + \ell \sin(\theta) \\
+        r(o) & := \exp\left(-\left(\frac{p_{\mathit{tip}}}{\sigma}\right)^2\right)
+    \end{align*}
+    Including higher-order derivatives does not always help.
+\end{frame}
+
+\begin{frame}{Wrapping environments}
+    Composability of environments helps while prototyping. In the Upkie
+    ground-velocity environment:
+    \begin{itemize}
+        \item Base environment: velocity commands
+        \item (Training:) add action noise
+        \item (Training:) add observation noise
+        \item (Training:) low-pass filter on wheel actuators
+        \item Include last ten observation-action pairs in observation vector
+        \item Change action to ground acceleration (with bounds)
+        \item Rescale action between $-1$ and $1$
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Quadrupedal locomotion~\cite{lee2020}}
@@ -483,15 +672,6 @@
     }
 \end{frame}
 
-\begin{frame}{Simulation pipeline}
-    \begin{figure}
-        \includegraphics[height=6cm]{figures/quadruped-sim-pipeline.png}
-    \end{figure}
-    \blfootnote{
-        Source:~\cite{hwangbo2019}
-    }
-\end{frame}
-
 \begin{frame}{Training pipeline}
     \begin{figure}
         \includegraphics[height=6.7cm]{figures/quadruped-training.png}
@@ -512,45 +692,8 @@
     }
 \end{frame}
 
-\begin{frame}{Formulating a reward}
-    Let $r_e$ denote the reward associated with an error function $e$:
-
-    Motivation:
-    \begin{itemize}
-        \item Exponential: $r_e = \exp(-e^2)$
-    \end{itemize}
-
-    Penalization:
-    \begin{itemize}
-        \item Absolute value $r_e = -|e|$
-        \item Squared value: $r_e = -e^2$
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{RewArt}
-    Making an RL pipeline work can lead to complex rewards, e.g. in~\cite{lee2020}:
-    \begin{itemize}
-        \item Linear velocity tracking: $r_{lv} = \exp(-2.0 (v_{pr} - 0.6)^2)$, or 1, or 0
-        \item Angular velocity tracking: $r_{av} = \exp(-1.5 (\omega_{pr} - 0.6)^2)$, or 1
-        \item Base motion tracking: $r_b = \exp(-1.5v_o^2) + \exp(-1.5 \|({}^B_{IB} \omega)_{xy}\|^2)$
-        \item Foot clearance: $r_{fc} = \sum_{i \in I_{swing}} \mathbf{1}_{fclear}(i) / |I_{swing}|$
-        \item Body-terrain collisions: $r_{bc} = -|I_{c,body} \textbackslash I_{c,foot}|$
-        \item Foot acceleration smoothness: $r_{s} = -\| (r_{f,d})_t - 2(r_{f,d})_{t-1} + (r_{f,d})_{t-2}\|$
-        \item Torque penalty: $r_{\tau} = -\sum_{i} | \tau_i |$
-    \end{itemize}
-    Final reward: $r = 0.05 r_{lv} + 0.05 r_{av} + 0.04 r_b + 0.01 r_{fc} + 0.02 r_{bc} + 0.025 r_s + 2 \cdot 10^{-5} r_{\tau}$
-\end{frame}
-
-\begin{frame}{Domain randomization}
-    Randomize selected environment parameters
-    \begin{itemize}
-        \item Physical properties: geometries $g_i$, inertias $m_i, I_i$
-        \item Initial state $s_0 \sim \rho_0(\cdot)$
-    \end{itemize}
-\end{frame}
-
 \begin{frame}{Noise}
-    ...
+    Noisy noise!
 \end{frame}
 
 \begin{frame}{Action smoothing}
@@ -590,7 +733,7 @@
         \item \textbf{Jittering:} action noise, due to need for stochastic policies (PGT!)
         \item \textbf{Sample efficiency:} requires millions of samples $(s_t, a_t, s_{t+1})$
         \item \textbf{Reward shaping:} often a necessity, ``RewArt''!
-        \item \textbf{Human supervision:} monitoring convergence to a satisfying policy\footnote{ Also known as SGD: ``Student Grad Descent``}
+        \item \textbf{Human supervision:} monitoring convergence to a satisfying policy\footnote{ Also known as SGD: ``Student Grad Descent''}
     \end{itemize}
 \end{frame}
 
@@ -608,7 +751,7 @@
 \end{frame}
 
 \begin{frame}[standout]
-Thank you for your attention!
+    Thank you for your attention!
 \end{frame}
 
 \section*{Bibliography}
