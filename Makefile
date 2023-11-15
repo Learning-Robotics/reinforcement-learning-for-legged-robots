@@ -1,4 +1,5 @@
 BIBTEX=biber
+INKSCAPE=${HOME}/Downloads/Inkscape-0e150ed-x86_64.AppImage
 LATEX=xelatex -interaction nonstopmode -halt-on-error -file-line-error -shell-escape
 READER=zathura
 SHELL=/bin/zsh
@@ -18,7 +19,7 @@ genfig:
 	mkdir -p genfig
 
 genfig/%.pdf: figures/%.svg
-	inkscape -C -z --file=$< --export-pdf=$@
+	$(INKSCAPE) -C -z --file=$< --export-pdf=$@
 
 clean:
 	-@rm -f $(PDF) $(TMP)
