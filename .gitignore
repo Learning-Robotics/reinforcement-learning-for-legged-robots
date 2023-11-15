@@ -14,6 +14,7 @@
 *.tns
 *.toc
 *.vrb
+.ipynb_checkpoints
 _minted*
 genfig/*.pdf
 slides.pdf
