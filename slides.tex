@@ -117,7 +117,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Examples and history}
+\section*{RL in robotics}
 
 \begin{frame}{2020: Quadrupedal locomotion}
     \vspace{1.5em}
@@ -311,7 +311,7 @@
         \includegraphics[height=6cm]{figures/taxonomy.png}
     \end{figure}
     \blfootnote{
-        There are many partial taxonomies, this one is from~\cite{spinningup}.
+        There are several taxonomies, none of them fully works. This one is from~\cite{spinningup}.
     }
 \end{frame}
 
@@ -320,7 +320,7 @@
         \includegraphics[height=6cm]{figures/taxonomy-focus.png}
     \end{figure}
     \blfootnote{
-        Our focus from there on.
+        Our focus in what follows.
     }
 \end{frame}
 
@@ -444,11 +444,13 @@
 \end{frame}
 
 \begin{frame}{Intuition behind clipping}
-    \begin{itemize}
-        \item When the advantage is positive: $$L(s,a,\theta_k,\theta) = \min\left( \frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}, (1 + \epsilon) \right) A^{\pi_{\theta_k}}(s,a)$$
-            The objective increases if the action becomes more likely $\pi_{\theta}(a|s) > \pi_{\theta_k}(a|s)$, but no extra benefit as soon as $ \pi_{\theta}(a|s) > (1+\epsilon) \pi_{\theta_k}(a|s)$.
-        \item When the advantage is negative: \emph{idem} \emph{mutatis mutandis}.
-    \end{itemize}
+    When the advantage is positive:
+
+    $$L(s,a,\theta_k,\theta) = \min\left( \frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}, (1 + \epsilon) \right) A^{\pi_{\theta_k}}(s,a)$$
+
+    The objective increases if the action becomes more likely $\pi_{\theta}(a|s) > \pi_{\theta_k}(a|s)$, but no extra benefit as soon as $ \pi_{\theta}(a|s) > (1+\epsilon) \pi_{\theta_k}(a|s)$.
+
+    When the advantage is negative: \emph{idem} \emph{mutatis mutandis}.
 \end{frame}
 
 \section{Training with PPO}
@@ -483,8 +485,8 @@
    \end{adjustbox}
 \end{frame}
 
-\begin{frame}{Training metrics}
-    \textbf{Rollout metrics:}
+\begin{frame}{Episode metrics}
+    Two main episode metrics:
     \begin{itemize}
         \item \mintinline{python}{ep_len_mean}: average length of an episode, in number of environment steps.
         \item \mintinline{python}{ep_rew_mean}: average return of an episode.
@@ -504,16 +506,6 @@
    \end{adjustbox}
 \end{frame}
 
-\begin{frame}{PPO metrics}
-    \begin{itemize}
-        \item \mintinline{python}{approx_kl}: approximate KL divergence between the old policy and the new one. Should go down over training but won't reach zero.
-        \item \mintinline{python}{clip_fraction}: mean fraction of surrogate loss that was clipped (above the clip-range threshold).
-        \item \mintinline{python}{clip_range}: current value of the clipping factor for the surrogate loss
-        \item \mintinline{python}{explained_variance}: indicates whether the value function is a good predictor for returns (EV $> 1$) or if it’s just worse than predicting nothing (EV $\leq 0$).
-        \item \mintinline{python}{learning_rate}: Current learning rate value.
-    \end{itemize}
-\end{frame}
-
 \begin{frame}[fragile]{PPO loss function}
     \begin{block}{Surrogate loss of PPO}
         \mintinline{python}{loss = policy_loss + ent_coef * entropy_loss + vf_coef * value_loss}
@@ -526,10 +518,23 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{PPO hyperparameters}
+    The PPO implementation in Stable Baselines3 has $> 25$ parameters, including:
+    \begin{itemize}
+        \item \mintinline{python}{clip_range}: clipping factor in policy loss.
+        \item \mintinline{python}{ent_coef}: weight of entropy term in the surrogate loss.
+        \item \mintinline{python}{gae_lambda}: parameter of Generalized Advantage Estimation.
+        \item \mintinline{python}{net_arch_pi}: policy network architecture.
+        \item \mintinline{python}{net_arch_vf}: value network architecture.
+        \item \mintinline{python}{normalize_advantage}: use advantage normalization?
+        \item \mintinline{python}{vf_coef}: weight of value-function term in the surrogate loss.
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{Optimizer parameters: steps, epochs, mini-batching}
     The optimizer behind PPO, usually Adam~\cite{kingma2014adam}, comes with parameters:
     \begin{itemize}
-        \item \mintinline{python}{learning_rate}: step size initialization parameter.
+        \item \mintinline{python}{learning_rate}: step size parameter, typically decreasing with a linear schedule.
         \item \mintinline{python}{n_steps}: number of environment steps to collect per rollout buffer.
         \item \mintinline{python}{n_epochs}: number of uses of the rollout buffer while optimizing the surrogate loss.
         \item \mintinline{python}{batch_size}: mini-batch size, same as in Stochastic Gradient Descent.
@@ -539,15 +544,13 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}{PPO parameters: others}
+\begin{frame}{PPO health metrics}
+    Finally, some metrics indicate whether training is going well:
     \begin{itemize}
-        \item \mintinline{python}{clip_range}: clipping factor in policy loss.
-        \item \mintinline{python}{ent_coef}: weight of entropy term in the surrogate loss.
-        \item \mintinline{python}{gae_lambda}: parameter of Generalized Advantage Estimation.
-        \item \mintinline{python}{net_arch_pi}: policy network architecture.
-        \item \mintinline{python}{net_arch_vf}: value network architecture.
-        \item \mintinline{python}{normalize_advantage}: use advantage normalization?
-        \item \mintinline{python}{vf_coef}: weight of value-function term in the surrogate loss.
+        \item \mintinline{python}{approx_kl}: approximate KL divergence between the old policy and the new one.
+        \item \mintinline{python}{clip_fraction}: mean fraction of policy ratios that were clipped.
+        \item \mintinline{python}{clip_range}: value of the clipping factor for the policy ratios.
+        \item \mintinline{python}{explained_variance}: $\approx 1$ when the value function is a good predictor for returns.
     \end{itemize}
 \end{frame}
 
@@ -561,16 +564,65 @@
 \end{frame}
 
 \begin{frame}{Toolbox to cross the gap}
-    \textbf{General things to do:}
+    General things to do:
     \begin{itemize}
+        \item Augment observations with history
         \item Observation-action normalization
-        \item Residual reinforcement learning
         \item Curriculum learning
     \end{itemize}
-    \textbf{Can help learn a more robust\footnote{Robust over model variations.} policy:}
+    Can help learn a more robust\footnote{Robust over model variations.} policy:
     \begin{itemize}
         \item Domain randomization
         \item Hybrid physics/data-based simulation
+        \item Reward shaping
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Augmenting observations with history}
+    \begin{itemize}
+        \item (Welcome to the worst slide of this deck)
+        \item (It is perhaps the most important robotics one!)
+        \item \textbf{Lag of a system:} number of observations required to estimate its state
+        \item We assume the Markov property: $\mathrm{lag} = 1$
+        \item Delays in control and physical systems increase their lag
+        \item Counter-measure: augment observations with history, restore the Markov property
+        \item RL-trained policies can be \textbf{remarkable} state estimators!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Observation-action normalization}
+    Specific to deep RL, normalize the:
+    \begin{itemize}
+        \item \textbf{Observation space:} bound physical quantities, when possible.
+        \item \textbf{Action space:} rescaling to $[-1, 1]$ is common practice.
+    \end{itemize}
+    Unnormalized actions don't work well on actors with Gaussian outputs (as in PPO):
+    \begin{itemize}
+        \item Limits too large $\Rightarrow$ sampled actions cluster around zero.
+        \item Limits too small $\Rightarrow$ sampled actions saturate all the time, \emph{bang-bang} behavior.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Curriculum learning}
+    Domain randomization and task difficulty vary based on policy performance.
+
+    Example: terrain curriculum for quadrupedal locomotion~\cite{lee2020}:
+    \begin{figure}
+        \includegraphics[height=6.7cm]{figures/quadruped-curriculum.png}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Toolbox to cross the gap}
+    General things to do:
+    \begin{itemize}
+        \item Augment observations with history
+        \item Observation-action normalization
+        \item Curriculum learning
+    \end{itemize}
+    Can help learn a more robust\footnote{Robust over model variations.} policy:
+    \begin{itemize}
+        \item Domain randomization
+        \item Hybrid physics: data-based actuation models
         \item Reward shaping
     \end{itemize}
 \end{frame}
@@ -588,17 +640,20 @@
     It slows down or completely hampers training.
 \end{frame}
 
-\begin{frame}{Curriculum learning}
-    \begin{itemize}
-        \item Learning rate schedule: typically linear
-        \item Domain randomization can vary over time
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Data-based actuation models}
+\begin{frame}{Data-based actuation models (1/2)}
     \begin{figure}
         \includegraphics[height=6cm]{figures/quadruped-sim-pipeline.png}
     \end{figure}
+    \blfootnote{
+        Source:~\cite{hwangbo2019}
+    }
+\end{frame}
+
+\begin{frame}{Data-based actuation models (2/2)}
+    \begin{figure}
+        \includegraphics[height=6.7cm]{figures/quadruped-training.png}
+    \end{figure}
+    \vspace{-0.7cm}
     \blfootnote{
         Source:~\cite{hwangbo2019}
     }
@@ -659,8 +714,8 @@
     \end{table}
 \end{frame}
 
-\begin{frame}{Rewards}
-    RewArt is not a necessity: advocacy for simple rewards (e.g. Walk-in-the-park).
+\begin{frame}{Example: Rewards}
+    RewArt is not a necessity: advocacy for simple rewards.
 
     In the Upkie ground-velocity environment, we went for:
     \begin{align*}
@@ -670,83 +725,42 @@
     Including higher-order derivatives does not always help.
 \end{frame}
 
-\begin{frame}{Wrapping environments}
+\begin{frame}{Example: environment wrappers}
     Composability of environments helps while prototyping. In the Upkie
     ground-velocity environment:
     \begin{itemize}
         \item Base environment: velocity commands
         \item (Training:) add action noise
         \item (Training:) add observation noise
-        \item (Training:) low-pass filter on wheel actuators
-        \item Include last ten observation-action pairs in observation vector
+        \item \textbf{(Training:) low-pass filter on wheel actuators}
+        \item \textbf{Include last ten observation-action pairs in observation vector}
         \item Change action to ground acceleration (with bounds)
-        \item Rescale action between $-1$ and $1$
+        \item \textbf{Rescale action between $-1$ and $1$}
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Normalization}
-    Specific to deep RL, normalize the:
-    \begin{itemize}
-        \item \textbf{Observation space:} bound physical quantities, when possible.
-        \item \textbf{Action space:} rescaling to $[-1, 1]$ is common practice.
-    \end{itemize}
-    Unnormalized actions don't work well on actors with Gaussian outputs (as in PPO):
-    \begin{itemize}
-        \item Limits too large $\Rightarrow$ sampled actions cluster around zero.
-        \item Limits too small $\Rightarrow$ sampled actions saturate all the time, \emph{bang-bang} behavior.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Training pipeline}
-    \begin{figure}
-        \includegraphics[height=6.7cm]{figures/quadruped-training.png}
-    \end{figure}
-    \vspace{-0.7cm}
-    \blfootnote{
-        Source:~\cite{hwangbo2019}
-    }
-\end{frame}
-
-\begin{frame}{Curriculum}
-    \begin{figure}
-        \includegraphics[height=6.7cm]{figures/quadruped-curriculum.png}
-    \end{figure}
-    \vspace{-0.7cm}
-    \blfootnote{
-        Source:~\cite{lee2020}
-    }
-\end{frame}
-
-\begin{frame}{Action smoothing}
-    \begin{itemize}
-        \item Stochastic policies have Gaussian outputs (includes exploration noise)
-        \item We can make outputs deterministic but policies still jitter
-        \item \textbf{Proposed solution:} \emph{smoothen} policy outputs~\cite{peng2020learning}
-        \item \textbf{Caveat:} dependency on action history, breaks out of MDP model
-        \item Next step: observation and action history to restore Markov property
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{Environment bounds}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.9\columnwidth]{genfig/max-accel.pdf}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Caveat: stochastic}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.9\columnwidth]{genfig/max-accel-bis.pdf}
-    \end{figure}
-\end{frame}
-
-% \begin{frame}{Normalizing observations}
+% \begin{frame}{Action smoothing}
 %     \begin{itemize}
-%         \item Normalizing:
-%         \item Standardizing:
+%         \item Stochastic policies have Gaussian outputs (includes exploration noise)
+%         \item We can make outputs deterministic but policies still jitter
+%         \item \textbf{Proposed solution:} \emph{smoothen} policy outputs~\cite{peng2020learning}
+%         \item \textbf{Caveat:} dependency on action history, breaks out of
+%         MDP model ==> ACTUALLY just tried this out today, this argument does
+%         not hold in the inverted pendulum of gymnasium, where we can still
+%         learn top-performing policies even with 100-step long action delay
+%         (but perfect observations). Only does it start to fail when the
+%         observation is delayed.
+%         \item Next step: observation and action history to restore Markov property
 %     \end{itemize}
 % \end{frame}
+
+\begin{frame}{Keep in mind that we are in a stochastic world}
+    \begin{figure}
+        \centering
+        \only<1>{\includegraphics[width=0.7\columnwidth]{genfig/max-accel.pdf}}
+        \only<2>{\includegraphics[width=0.7\columnwidth]{genfig/max-accel-bis.pdf}}
+    \end{figure}
+\end{frame}
 
 \begin{frame}{Challenges for RL}
     \begin{itemize}
@@ -758,15 +772,15 @@
     \end{itemize}
 \end{frame}
 
-\section{Conclusion}
+\section{What did we see?}
 
 \begin{frame}{What we saw}
     \begin{itemize}
         \item Partially-observable Markov decision process (POMPD)
         \item The goal of reinforcement learning
         \item Model, policy and value function
-        \item Policy gradient algorithm
-        \item Application to robotics: domain randomization, ``RewArt''
+        \item Policy optimization: REINFORCE, policy gradient, PPO
+        \item Application to robotics: domain randomization, Markov property, ``RewArt''
         \item RL is not magic: great results, possibly going to great lengths!
     \end{itemize}
 \end{frame}
