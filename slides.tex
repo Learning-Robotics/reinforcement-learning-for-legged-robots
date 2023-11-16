@@ -226,7 +226,7 @@
                 if terminated or truncated:
                     observation, _ = env.reset()
                 cart_position = observation[0]
-                action = env.action_space.sample()
+                action = 0 if cart_position > 0.0 else 1
     \end{minted}
 \end{frame}
 
@@ -252,7 +252,7 @@
 \begin{frame}{Goal of reinforcement learning}
     Two last missing pieces:
     \begin{itemize}
-        \item \textbf{Episode:} $\tau = (s_0, a_0, r_0, s_1, a_1, r_1, \ldots)$
+        \item \textbf{Episode:} $\tau = (s_0, a_0, r_0, s_1, a_1, r_1, \ldots)$ truncated or infinite\footnote{In practice episodes contain $o_t$ rather than $s_t$. In RL, we implicitly assume that observations contain enough information to be in bijection with their corresponding states. See also \emph{Augmenting observations} thereafter.}
         \item \textbf{Return:} $R(\tau) = \sum_{t \in \tau} r_t$ or with discount $\gamma \in ]0, 1[$: $R(\tau) = \sum_{t \in \tau} \gamma^t r_t$
     \end{itemize}
     We can now state what reinforcement learning is about:
@@ -284,7 +284,7 @@
     \end{itemize}
     State-action value functions $Q$:
     \begin{itemize}
-        \item \textbf{On-policy:} expected return from following policy: $Q^\pi(s, a) = \mathbb{E}_{\tau \sim \pi}(R(\tau) | s_0 = s, a_0 = a)$
+        \item \textbf{On-policy:} expected return from following policy: $Q^\pi(s, a) = \mathbb{E}_{\tau \sim pi}(R(\tau) | s_0 = s, a_0 = a)$
         \item \textbf{Optimal:} best return we can expect: $Q^*(s, a) = \max_\pi \mathbb{E}_{\tau \sim \pi}(R(\tau) | s_0 = s, a_0 = a)$
     \end{itemize}
 \end{frame}
@@ -335,7 +335,7 @@
     Policy-based algorithms update policy parameters $\theta$ iteratively. At each iteration $k$:
     \begin{itemize}
         \item Collect episodes $\mathcal{D}_k = \{ \tau \}$
-        \item Update the policy $\pi_{k+1} = \mathit{update}(\pi_k, \mathcal{D}_k)$
+        \item Update the policy $\pi_{\theta_{k+1}} = \mathit{update}(\pi_{\theta_k}, \mathcal{D}_k)$
     \end{itemize}
     Two ways to collect episodes:
     \begin{itemize}
@@ -369,7 +369,7 @@
     LHS: the graal. RHS: things we observe ($R(\tau)$) or know by design ($\nabla_\theta \log \pi_\theta$).
 \end{frame}
 
-\begin{frame}{REINFORCE}
+\begin{frame}{REINFORCE (1/2)}
     \begin{block}{REINFORCE algorithm~\cite{sutton2018}}
         \centering
         \scalebox{0.8}{
@@ -388,7 +388,7 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{Back to REINFORCE}
+\begin{frame}{REINFORCE (2/2)}
     Gradient ascent:
     $$
     \theta_{k+1} = \theta_k + \alpha \nabla_\theta J(\theta_k)
@@ -778,7 +778,7 @@
 
 \begin{frame}{What we saw}
     \begin{itemize}
-        \item Partially-observable Markov decision process (POMPD)
+        \item Partially-observable Markov decision process (POMDP)
         \item The goal of reinforcement learning
         \item Model, policy and value function
         \item Policy optimization: REINFORCE, policy gradient, PPO
@@ -788,7 +788,7 @@
 \end{frame}
 
 \begin{frame}[standout]
-    Thank you for your attention!
+    Thank you for your attention!\footnote{\color{white} Thanks to Nicolas Perrin-Gilbert and the 2023 class at MVA for feedback on previous versions of these slides.}
 \end{frame}
 
 \section*{Bibliography}
