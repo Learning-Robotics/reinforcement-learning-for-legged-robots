@@ -25,12 +25,12 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.0697046"
-     inkscape:cx="477.70195"
-     inkscape:cy="321.11667"
+     inkscape:cx="478.16939"
+     inkscape:cy="320.64927"
      inkscape:window-width="1920"
-     inkscape:window-height="1080"
+     inkscape:window-height="1041"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="19"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer2"
      fit-margin-top="0"
@@ -1903,6 +1903,41 @@
          style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
          id="path2414-0-6-2-2" />
     </marker>
+    <g
+       id="g9421">
+      <symbol
+         overflow="visible"
+         id="symbol9642">
+        <path
+           style="stroke:none;"
+           d=""
+           id="path4461" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol2273">
+        <path
+           style="stroke:none;"
+           d="M 0.328125 1.71875 C 0.296875 1.84375 0.296875 1.859375 0.296875 1.890625 C 0.296875 2.03125 0.40625 2.15625 0.578125 2.15625 C 0.78125 2.15625 0.90625 1.96875 0.921875 1.9375 C 0.984375 1.859375 1.296875 0.515625 1.5625 -0.5625 C 1.765625 -0.15625 2.078125 0.109375 2.546875 0.109375 C 3.71875 0.109375 5 -1.296875 5 -2.78125 C 5 -3.84375 4.34375 -4.40625 3.625 -4.40625 C 2.65625 -4.40625 1.609375 -3.40625 1.3125 -2.1875 Z M 2.546875 -0.109375 C 1.84375 -0.109375 1.6875 -0.90625 1.6875 -1 C 1.6875 -1.03125 1.734375 -1.234375 1.765625 -1.359375 C 2.046875 -2.484375 2.140625 -2.84375 2.359375 -3.234375 C 2.796875 -3.96875 3.296875 -4.1875 3.59375 -4.1875 C 3.96875 -4.1875 4.28125 -3.890625 4.28125 -3.203125 C 4.28125 -2.65625 4 -1.546875 3.734375 -1.0625 C 3.40625 -0.421875 2.921875 -0.109375 2.546875 -0.109375 Z M 2.546875 -0.109375 "
+           id="path1689" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol3329">
+        <path
+           style="stroke:none;"
+           d=""
+           id="path5047" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol1208">
+        <path
+           style="stroke:none;"
+           d="M 3.59375 -2.21875 C 3.59375 -2.984375 3.5 -3.546875 3.1875 -4.03125 C 2.96875 -4.34375 2.53125 -4.625 1.984375 -4.625 C 0.359375 -4.625 0.359375 -2.71875 0.359375 -2.21875 C 0.359375 -1.71875 0.359375 0.140625 1.984375 0.140625 C 3.59375 0.140625 3.59375 -1.71875 3.59375 -2.21875 Z M 1.984375 -0.0625 C 1.65625 -0.0625 1.234375 -0.25 1.09375 -0.8125 C 1 -1.21875 1 -1.796875 1 -2.3125 C 1 -2.828125 1 -3.359375 1.09375 -3.734375 C 1.25 -4.28125 1.6875 -4.4375 1.984375 -4.4375 C 2.359375 -4.4375 2.71875 -4.203125 2.84375 -3.796875 C 2.953125 -3.421875 2.96875 -2.921875 2.96875 -2.3125 C 2.96875 -1.796875 2.96875 -1.28125 2.875 -0.84375 C 2.734375 -0.203125 2.265625 -0.0625 1.984375 -0.0625 Z M 1.984375 -0.0625 "
+           id="path819" />
+      </symbol>
+    </g>
   </defs>
   <g
      inkscape:groupmode="layer"
@@ -2803,76 +2838,6 @@
        sodipodi:nodetypes="cc" />
     <g
        inkscape:label=""
-       transform="matrix(0.86253231,0,0,0.86253231,-145.67823,50.647834)"
-       id="g36332"
-       style="fill:#008080">
-      <g
-         id="g6389"
-         style="fill:#008080">
-        <g
-           style="fill:#008080;fill-opacity:1"
-           id="g2741">
-          <use
-             xlink:href="#symbol14"
-             x="91.925003"
-             y="81.962997"
-             id="use9228"
-             style="fill:#008080"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#008080;fill-opacity:1"
-           id="g9690">
-          <use
-             xlink:href="#symbol8006"
-             x="97.075996"
-             y="81.962997"
-             id="use9383"
-             style="fill:#008080"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#008080;fill-opacity:1"
-           id="g1091">
-          <use
-             xlink:href="#symbol4427"
-             x="100.95"
-             y="81.962997"
-             id="use9217"
-             style="fill:#008080"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#008080;fill-opacity:1"
-           id="g7320">
-          <use
-             xlink:href="#symbol9769"
-             x="105.62"
-             y="83.457001"
-             id="use4469"
-             style="fill:#008080"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#008080;fill-opacity:1"
-           id="g9138">
-          <use
-             xlink:href="#symbol7307"
-             x="110.09"
-             y="81.962997"
-             id="use5642"
-             style="fill:#008080"
-             width="100%"
-             height="100%" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
        transform="matrix(0.73662776,0,0,0.73662776,-91.983782,77.030063)"
        id="g2770"
        style="fill:#ff0000">
@@ -3080,6 +3045,40 @@
              style="fill:#ff0000"
              width="100%"
              height="100%" />
+        </g>
+      </g>
+    </g>
+    <g
+       inkscape:label=""
+       transform="translate(-154.48988,34.686651)"
+       id="g1914"
+       style="fill:#008080">
+      <g
+         id="g4958"
+         style="fill:#008080">
+        <g
+           style="fill:#008080;fill-opacity:1"
+           id="g1778">
+          <use
+             xlink:href="#symbol2273"
+             x="91.925003"
+             y="81.962997"
+             id="use109"
+             width="100%"
+             height="100%"
+             style="fill:#008080" />
+        </g>
+        <g
+           style="fill:#008080;fill-opacity:1"
+           id="g3081">
+          <use
+             xlink:href="#symbol1208"
+             x="97.075996"
+             y="83.457001"
+             id="use9781"
+             width="100%"
+             height="100%"
+             style="fill:#008080" />
         </g>
       </g>
     </g>
