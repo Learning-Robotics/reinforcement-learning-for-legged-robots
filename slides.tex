@@ -18,7 +18,7 @@
 \usefonttheme{professionalfonts}
 \usepackage{theme/beamercolorthememetropolisinria}
 
-\setbeamertemplate{frame footer}{{\textbf{Planification de mouvement en robotique et en animation graphique :}}\insertshorttitle}
+\setbeamertemplate{frame footer}{{\textbf{Robotics MVA :}}\insertshorttitle}
 \setbeamerfont{page number in head/foot}{size=\tiny}
 \setbeamercolor{footline}{fg=gray}
 
@@ -569,7 +569,7 @@
 
 \section{Application to robotics}
 
-\begin{frame}{Generalities}
+\begin{frame}{Training a policy}
     General things to do when training a policy:
     \begin{itemize}
         \item Augment observations with history
@@ -579,15 +579,14 @@
 \end{frame}
 
 \begin{frame}{Augmenting observations with history}
+    (Welcome to the worst slide of this deck!)
     \begin{itemize}
-        \item (Welcome to the worst slide of this deck)
-        \item (It is perhaps the most important robotics one!)
         \item \textbf{Lag of a system:} number of observations required to estimate its state
         \item We assume the Markov property: $\mathrm{lag} = 1$
         \item Delays in control and physical systems increase their lag
         \item Counter-measure: augment observations with history, restore the Markov property
-        \item RL-trained policies can be \textbf{remarkable} state estimators!
     \end{itemize}
+    RL-trained policies can be remarkable state estimators!
 \end{frame}
 
 \begin{frame}{Observation-action normalization}
@@ -627,24 +626,13 @@
     To learn a more robust\footnote{Robustness over model variations.} policy:
     \begin{itemize}
         \item Domain randomization
-        \item Hybrid physics/data-based simulation
+        \item Data-based simulation
         \item Reward shaping
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Toolbox to cross the gap}
-    General things to do:
-    \begin{itemize}
-        \item Augment observations with history
-        \item Observation-action normalization
-        \item Curriculum learning
-    \end{itemize}
-    Can help learn a more robust\footnote{Robust over model variations.} policy:
-    \begin{itemize}
-        \item Domain randomization
-        \item Hybrid physics: data-based actuation models
-        \item Reward shaping
-    \end{itemize}
+\begin{frame}{Teacher-student distillation}
+    TODO: Lee et al., RMA, ...
 \end{frame}
 
 \begin{frame}{Domain randomization}
@@ -796,14 +784,19 @@
 \section{What did we see?}
 
 \begin{frame}{What we saw}
+    Introduction to policy optimization:
     \begin{itemize}
         \item Partially-observable Markov decision process (POMDP)
         \item The goal of reinforcement learning
         \item Model, policy and value function
         \item Policy optimization: REINFORCE, policy gradient, PPO
-        \item Application to robotics: domain randomization, Markov property, ``RewArt''
-        \item RL is not magic: great results, possibly going to great lengths!
     \end{itemize}
+    Application to robotics:
+    \begin{itemize}
+        \item Training policies: add history, normalization, curriculum
+        \item Sim-to-real gap: domain randomization, data-based sim, ``RewArt''
+    \end{itemize}
+    RL is not magic: great results, possibly going to great lengths!
 \end{frame}
 
 \begin{frame}[standout]
