@@ -569,25 +569,12 @@
 
 \section{Application to robotics}
 
-\begin{frame}{Sim2real gap}
-    \begin{figure}
-        \includegraphics[height=5cm]{genfig/sim2real.pdf}
-        \caption{The ``sim2real gap'' is a metaphor for model mismatch.}
-    \end{figure}
-\end{frame}
-
-\begin{frame}{Toolbox to cross the gap}
-    General things to do:
+\begin{frame}{Generalities}
+    General things to do when training a policy:
     \begin{itemize}
         \item Augment observations with history
         \item Observation-action normalization
         \item Curriculum learning
-    \end{itemize}
-    Can help learn a more robust\footnote{Robust over model variations.} policy:
-    \begin{itemize}
-        \item Domain randomization
-        \item Hybrid physics/data-based simulation
-        \item Reward shaping
     \end{itemize}
 \end{frame}
 
@@ -623,6 +610,26 @@
     \begin{figure}
         \includegraphics[height=6.7cm]{figures/quadruped-curriculum.png}
     \end{figure}
+\end{frame}
+
+\begin{frame}{Sim-to-real gap}
+    \begin{figure}
+        \includegraphics[height=5cm]{genfig/sim2real.pdf}
+        \caption{The ``sim-to-real gap'' is a metaphor for model mismatch.}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Crossing the sim-to-real gap}
+    To improve state observation:
+    \begin{itemize}
+        \item Teacher-student distillation
+    \end{itemize}
+    To learn a more robust\footnote{Robustness over model variations.} policy:
+    \begin{itemize}
+        \item Domain randomization
+        \item Hybrid physics/data-based simulation
+        \item Reward shaping
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Toolbox to cross the gap}
@@ -778,7 +785,7 @@
 
 \begin{frame}{Challenges for RL}
     \begin{itemize}
-        \item \textbf{Sim2real:} no one-size-fits-all method, depends on robot and task
+        \item \textbf{Sim-to-real:} no one-size-fits-all method, depends on robot and task
         \item \textbf{Jittering:} action noise, due to need for stochastic policies (PGT!)
         \item \textbf{Sample efficiency:} requires millions of samples $(s_t, a_t, s_{t+1})$
         \item \textbf{Reward shaping:} often helps, not a necessity, ``RewArt''!
