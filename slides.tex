@@ -521,10 +521,9 @@
 
 \begin{frame}[fragile]{PPO loss function}
     \begin{block}{Surrogate loss of PPO}
-        \mintinline{python}{loss = policy_loss + ent_coef * entropy_loss + vf_coef * value_loss}
+        \mintinline{python}{loss = policy_gradient_loss + ent_coef * entropy_loss + vf_coef * value_loss}
     \end{block}
     \begin{itemize}
-        \item \mintinline{python}{loss}: surrogate loss, computed using the above formula.
         \item \mintinline{python}{policy_gradient_loss}: regular loss resulting from episode returns.
         \item \mintinline{python}{entropy_loss}: negative of the average policy entropy. It should increase to zero over training as the policy becomes more deterministic.
         \item \mintinline{python}{value_loss}: value function estimation loss, \emph{i.e.} error between the output of the function estimator and Monte-Carlo or TD(GAE lambda) estimates.
