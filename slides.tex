@@ -107,7 +107,7 @@
 }
 
 \author{\textbf{St\'ephane Caron}}
-\date{\today}
+\date{November 16, 2023}
 \institute{Inria, \'{E}cole normale sup\'{e}rieure}
 
 \begin{document}
@@ -630,9 +630,10 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Teacher-student distillation}
-    TODO: Lee et al., RMA, ...
-\end{frame}
+% TODO(scaron): distillation
+% \begin{frame}{Teacher-student distillation}
+%     TODO: Lee et al., RMA, ...
+% \end{frame}
 
 \begin{frame}{Domain randomization}
     Randomize selected environment parameters:
@@ -652,19 +653,15 @@
     \begin{figure}
         \includegraphics[height=6cm]{figures/quadruped-sim-pipeline.png}
     \end{figure}
-    \blfootnote{
-        Source:~\cite{hwangbo2019}
-    }
+    \blfootcite{hwangbo2019}
 \end{frame}
 
 \begin{frame}{Data-based actuation models (2/2)}
     \begin{figure}
-        \includegraphics[height=6.7cm]{figures/quadruped-training.png}
+        \includegraphics[height=6cm]{figures/quadruped-training.png}
     \end{figure}
     \vspace{-0.7cm}
-    \blfootnote{
-        Source:~\cite{hwangbo2019}
-    }
+    \blfootcite{hwangbo2019}
 \end{frame}
 
 \begin{frame}{Reward shaping}
@@ -747,26 +744,15 @@
     \end{itemize}
 \end{frame}
 
-% \begin{frame}{Action smoothing}
-%     \begin{itemize}
-%         \item Stochastic policies have Gaussian outputs (includes exploration noise)
-%         \item We can make outputs deterministic but policies still jitter
-%         \item \textbf{Proposed solution:} \emph{smoothen} policy outputs~\cite{peng2020learning}
-%         \item \textbf{Caveat:} dependency on action history, breaks out of
-%         MDP model ==> ACTUALLY just tried this out today, this argument does
-%         not hold in the inverted pendulum of gymnasium, where we can still
-%         learn top-performing policies even with 100-step long action delay
-%         (but perfect observations). Only does it start to fail when the
-%         observation is delayed.
-%         \item Next step: observation and action history to restore Markov property
-%     \end{itemize}
-% \end{frame}
-
 \begin{frame}{Keep in mind that we are in a stochastic world}
     \begin{figure}
         \centering
-        \only<1>{\includegraphics[width=0.7\columnwidth]{genfig/max-accel.pdf}}
-        \only<2>{\includegraphics[width=0.7\columnwidth]{genfig/max-accel-bis.pdf}}
+        \only<1>{\includegraphics[height=5cm]{genfig/max-accel.pdf}}
+        \only<2>{\includegraphics[height=5cm]{genfig/max-accel-bis.pdf}}
+        \caption{
+            \only<1>{We may be observing the effect of our parameter.}
+            \only<2>{Or we may be observing the variance of the training process.}
+        }
     \end{figure}
 \end{frame}
 

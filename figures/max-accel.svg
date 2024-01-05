@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="341.79282mm"
-   height="179.18303mm"
-   viewBox="0 0 341.79281 179.18302"
+   width="350mm"
+   height="180mm"
+   viewBox="0 0 349.99999 179.99999"
    version="1.1"
    id="svg5"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
@@ -28,15 +28,16 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="0.71632579"
-     inkscape:cx="709.87253"
-     inkscape:cy="292.46469"
+     inkscape:zoom="0.61076842"
+     inkscape:cx="645.90766"
+     inkscape:cy="502.6455"
      inkscape:window-width="1920"
-     inkscape:window-height="1080"
+     inkscape:window-height="1041"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="19"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer1"
+     width="430mm" />
   <defs
      id="defs2" />
   <g
@@ -55,26 +56,26 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="-178.80188"
+       x="-178.91849"
        y="-75.353722"
        id="text1256"
        transform="rotate(-90)"><tspan
          sodipodi:role="line"
          id="tspan1254"
          style="stroke-width:0.264583"
-         x="-178.80188"
+         x="-178.91849"
          y="-75.353722">Mean reward</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="49.993076"
-       y="238.00783"
+       x="50.566803"
+       y="238.06682"
        id="text3260"><tspan
          sodipodi:role="line"
          id="tspan3258"
          style="stroke-width:0.264583"
-         x="49.993076"
-         y="238.00783">Environment steps</tspan></text>
+         x="50.566803"
+         y="238.06682">Environment steps</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#d45500;fill-opacity:1;stroke:none;stroke-width:0.264583"
