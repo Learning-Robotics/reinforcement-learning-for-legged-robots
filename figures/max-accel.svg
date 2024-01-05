@@ -86,7 +86,7 @@
          id="tspan3258-6"
          style="fill:#d45500;stroke-width:0.264583"
          x="-69.377403"
-         y="177.78183">max accel 10³</tspan></text>
+         y="177.78183">param = 10³</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#d45500;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -98,7 +98,7 @@
          id="tspan3258-6-56"
          style="fill:#217844;stroke-width:0.264583"
          x="-22.181074"
-         y="224.97816">max accel 10⁶</tspan></text>
+         y="224.97816">param = 10⁶</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;fill:#003380;fill-opacity:1;stroke:none;stroke-width:0.264583"
@@ -110,6 +110,6 @@
          id="tspan3258-6-5"
          style="fill:#003380;stroke-width:0.264583"
          x="-102.56674"
-         y="130.61852">max accel 10</tspan></text>
+         y="130.61852">param = 10</tspan></text>
   </g>
 </svg>
