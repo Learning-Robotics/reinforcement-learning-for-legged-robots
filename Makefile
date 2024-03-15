@@ -1,5 +1,4 @@
 BIBTEX=biber
-#INKSCAPE=${HOME}/Downloads/Inkscape-0e150ed-x86_64.AppImage
 INKSCAPE=inkscape
 LATEX=xelatex -interaction nonstopmode -halt-on-error -file-line-error -shell-escape
 READER=zathura
