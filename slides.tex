@@ -365,6 +365,14 @@
     LHS: the graal. RHS: things we observe ($R(\tau)$) or know by design ($\nabla_\theta \log \pi_\theta$).
 \end{frame}
 
+\begin{frame}{Log-policy gradient example}
+    With a diagonal Gaussian policy:
+    \begin{align*}
+        \log \pi_\theta(a|s) & = -\frac{1}{2} \left[\sum_{i=1}^k \left(\frac{(a_i - \mu_i)^2}{\sigma_i^2} + 2 \log \sigma_i\right) + k \log 2\pi\right] \\
+        \nabla_\theta \log \pi_\theta(a|s) & = -\frac{1}{2} \left[ ... \right]
+    \end{align*}
+\end{frame}
+
 \begin{frame}{Policy gradient theorem: proof sketch}
     \begin{align*}
         \nabla_{\theta} J(\theta)
