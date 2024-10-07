@@ -275,7 +275,7 @@
     \end{align*}
 \end{frame}
 
-\begin{frame}{Value functions (1/2)}
+\begin{frame}{Value functions}
     State value functions $V$:
     \begin{itemize}
         \item \textbf{On-policy:} expected return from a given policy: $V^\pi(s) = \mathbb{E}_{\tau \sim \pi}(R(\tau) | s_0 = s)$
@@ -288,16 +288,6 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Value functions (2/2)}
-    Value functions satisfy the Bellman equation:
-    \begin{block}{Bellman equation}
-        \[
-            V^*(s) = \max_\pi \mathbb{E}_{a \sim \pi(\cdot | s), (r, s') \sim p(s' | s, a)}[r + \gamma V^*(s')]
-        \]
-    \end{block}
-    This is a connection to optimal control (\emph{e.g.} differential dynamic programming) and $Q$-learning, but not our topic today.
-\end{frame}
-
 \begin{frame}{Components of an RL algorithm}
     A reinforcement-learning algorithm may include any of the following:
     \begin{itemize}
@@ -307,7 +297,7 @@
     \end{itemize}
     An algorithm with a policy (actor) and a value function (critic) is called \emph{actor-critic}.
 
-    An algorithm with/without an explicit model is called \emph{model-based}/\emph{free}.
+    An algorithm with an explicit model is called \emph{model-based} (without: \emph{model-free}).
 \end{frame}
 
 \begin{frame}{A taxonomy of RL algorithms}
@@ -794,6 +784,18 @@
 \setbeamertemplate{bibliography item}{\insertbiblabel}
 \begin{frame}[allowframebreaks]{References}
     \printbibliography[heading=none]
+\end{frame}
+
+\section{Bonus slides}
+
+\begin{frame}{Bellman equation}
+    Value functions satisfy the Bellman equation:
+    \begin{block}{Bellman equation}
+        \[
+            V^*(s) = \max_\pi \mathbb{E}_{a \sim \pi(\cdot | s), (r, s') \sim p(s' | s, a)}[r + \gamma V^*(s')]
+        \]
+    \end{block}
+    This is a connection to optimal control (\emph{e.g.} differential dynamic programming) and $Q$-learning, but not our topic today.
 \end{frame}
 
 \end{document}
