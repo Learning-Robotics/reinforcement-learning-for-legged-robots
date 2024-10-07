@@ -461,16 +461,6 @@
     \vspace{-1.5em}
 \end{frame}
 
-\begin{frame}{Intuition behind clipping}
-    When the advantage is positive:
-
-    $$L(s,a,\theta_k,\theta) = \min\left( \frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}, (1 + \epsilon) \right) A^{\pi_{\theta_k}}(s,a)$$
-
-    The objective increases if the action becomes more likely $\pi_{\theta}(a|s) > \pi_{\theta_k}(a|s)$, but no extra benefit as soon as $ \pi_{\theta}(a|s) > (1+\epsilon) \pi_{\theta_k}(a|s)$.
-
-    When the advantage is negative: \emph{idem} \emph{mutatis mutandis}.
-\end{frame}
-
 \section{Training with PPO}
 
 \begin{frame}{Training}
@@ -811,6 +801,16 @@
         \]
     \end{block}
     This is a connection to optimal control (\emph{e.g.} differential dynamic programming) and $Q$-learning, but not our topic today.
+\end{frame}
+
+\begin{frame}{Intuition behind clipping in PPO}
+    When the advantage is positive:
+
+    $$L(s,a,\theta_k,\theta) = \min\left( \frac{\pi_{\theta}(a|s)}{\pi_{\theta_k}(a|s)}, (1 + \epsilon) \right) A^{\pi_{\theta_k}}(s,a)$$
+
+    The objective increases if the action becomes more likely $\pi_{\theta}(a|s) > \pi_{\theta_k}(a|s)$, but no extra benefit as soon as $ \pi_{\theta}(a|s) > (1+\epsilon) \pi_{\theta_k}(a|s)$.
+
+    When the advantage is negative: \emph{idem} \emph{mutatis mutandis}.
 \end{frame}
 
 \end{document}
