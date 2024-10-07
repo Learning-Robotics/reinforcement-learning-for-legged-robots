@@ -327,16 +327,16 @@
     \[
         a \sim \pi_\theta(\cdot|s) \ \Longleftrightarrow \ a = \mu_\theta(s) + \mathrm{diag}(\sigma_\theta(s)) z, \ z \sim \mathcal{N}(0, I_m)
     \]
-    where $\mu_\theta$ and $\sigma_\theta$ are neural networks mapping states to means and standard deviations.
-
-    (Common practice: $\sigma$ does not depend on $s$, put $\log \sigma \in \mathbb{R}^m$ rather than $\sigma \in \mathbb{R}^m_+$ in $\theta$.)
+    where $\mu_\theta$ and $\sigma_\theta$ are neural networks mapping states to means and standard deviations.\footnote{In practice, $\sigma$ often does not depend on $s$, and we store $\log \sigma \in \mathbb{R}^m$ rather than $\sigma \in \mathbb{R}^m_+$ in $\theta$.}
 \end{frame}
 
 \begin{frame}{Policy-based algorithms}
-    Policy-based algorithms update policy parameters $\theta$ iteratively. At each iteration $k$:
+    A policy-based algorithm updates policy parameters $\theta$ iteratively.
+
+    At each iteration $k$:
     \begin{itemize}
-        \item Collect episodes $\mathcal{D}_k = \{ \tau \}$
-        \item Update the policy $\pi_{\theta_{k+1}} = \mathit{update}(\pi_{\theta_k}, \mathcal{D}_k)$
+        \item Collect a \emph{batch} of episodes $\mathcal{D}_k = \{ \tau \}$
+        \item Apply some update $\theta_{k+1} = \mathit{update}(\theta_k, \mathcal{D}_k)$ to get a new policy $\pi_{\theta_{k+1}}$
     \end{itemize}
 \end{frame}
 
