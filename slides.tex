@@ -220,7 +220,7 @@
         with gym.make("CartPole-v1", render_mode="human") as env:
             env.reset()
             action = env.action_space.sample()
-            for step in range(1000):
+            for step in range(1_000_000):
                 observation, reward, terminated, truncated, _ = env.step(action)
                 if terminated or truncated:
                     observation, _ = env.reset()
@@ -238,7 +238,7 @@
 
         with gym.make("UpkieGroundVelocity-v1", frequency=200.0) as env:
             env.reset()
-            action = 0.0 * env.action_space.sample()
+            action = env.action_space.sample()
             for step in range(1_000_000):
                 observation, reward, terminated, truncated, _ = env.step(action)
                 if terminated or truncated:
