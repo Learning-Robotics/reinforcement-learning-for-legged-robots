@@ -320,16 +320,23 @@
 
 \section{Policy optimization}
 
+\begin{frame}{Parameterized policy}
+    We parameterize our policy $\pi_\theta$ by a vector $\theta \in \mathbb{R}^n$.
+
+    For continuous actions, it is common to use a \emph{diagonal Gaussian policy}:
+    \[
+        a \sim \pi_\theta(\cdot|s) \ \Longleftrightarrow \ a = \mu_\theta(s) + \mathrm{diag}(\sigma_\theta(s)) z, \ z \sim \mathcal{N}(0, I_m)
+    \]
+    where $\mu_\theta$ and $\sigma_\theta$ are neural networks mapping states to means and standard deviations.
+
+    (Common practice: $\sigma$ does not depend on $s$, put $\log \sigma \in \mathbb{R}^m$ rather than $\sigma \in \mathbb{R}^m_+$ in $\theta$.)
+\end{frame}
+
 \begin{frame}{Policy-based algorithms}
     Policy-based algorithms update policy parameters $\theta$ iteratively. At each iteration $k$:
     \begin{itemize}
         \item Collect episodes $\mathcal{D}_k = \{ \tau \}$
         \item Update the policy $\pi_{\theta_{k+1}} = \mathit{update}(\pi_{\theta_k}, \mathcal{D}_k)$
-    \end{itemize}
-    Two ways to collect episodes:
-    \begin{itemize}
-        \item \textbf{On-policy:} episodes $\mathcal{D}_k$ are collected with the latest policy $\pi_k$
-        \item \textbf{Off-policy:} episodes $\mathcal{D}_k$ are collected with any policy
     \end{itemize}
 \end{frame}
 
